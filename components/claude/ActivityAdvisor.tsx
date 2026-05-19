@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import type { GeoLocation, CurrentWeather } from '@/types/weather'
 
 interface ActivityAdvisorProps {
@@ -12,8 +12,15 @@ export function ActivityAdvisor({ location, weather }: ActivityAdvisorProps) {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [started, setStarted] = useState(false)
+  const abortRef = useRef<AbortController | undefined>(undefined)
+
+  useEffect(() => {
+    return () => abortRef.current?.abort()
+  }, [])
 
   const fetchActivities = async () => {
+    abortRef.current?.abort()
+    abortRef.current = new AbortController()
     setLoading(true)
     setStarted(true)
     setText('')
@@ -23,6 +30,7 @@ export function ActivityAdvisor({ location, weather }: ActivityAdvisorProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ location, weather }),
+        signal: abortRef.current.signal,
       })
 
       if (!res.body) throw new Error('No response body')
@@ -35,7 +43,8 @@ export function ActivityAdvisor({ location, weather }: ActivityAdvisorProps) {
         if (done) break
         setText((prev) => prev + decoder.decode(value, { stream: true }))
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof Error && err.name === 'AbortError') return
       setText('Unable to generate activity suggestions right now. Please try again.')
     } finally {
       setLoading(false)

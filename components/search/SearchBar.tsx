@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation'
 import type { GeoLocation } from '@/types/weather'
 import { useWeatherStore } from '@/lib/store/weather-store'
 
-let debounceTimer: ReturnType<typeof setTimeout>
-
 export function SearchBar({ placeholder = 'Search city...' }: { placeholder?: string }) {
   const router = useRouter()
   const setCurrentCity = useWeatherStore((s) => s.setCurrentCity)
@@ -15,11 +13,12 @@ export function SearchBar({ placeholder = 'Search city...' }: { placeholder?: st
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const search = useCallback((q: string) => {
-    clearTimeout(debounceTimer)
+    clearTimeout(debounceTimer.current)
     if (q.trim().length < 2) { setResults([]); setOpen(false); return }
-    debounceTimer = setTimeout(async () => {
+    debounceTimer.current = setTimeout(async () => {
       setLoading(true)
       try {
         const res = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`)
@@ -50,6 +49,10 @@ export function SearchBar({ placeholder = 'Search city...' }: { placeholder?: st
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  useEffect(() => {
+    return () => clearTimeout(debounceTimer.current)
   }, [])
 
   return (

@@ -3,12 +3,34 @@ import Anthropic from '@anthropic-ai/sdk'
 import { buildActivityPrompt } from '@/lib/claude/prompts'
 import type { GeoLocation, CurrentWeather } from '@/types/weather'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export async function POST(request: NextRequest) {
-  const body = await request.json() as { location: GeoLocation; weather: CurrentWeather }
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return new Response(JSON.stringify({ error: 'AI features not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
 
+  let body: { location: GeoLocation; weather: CurrentWeather }
+  try {
+    body = await request.json()
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  if (!body?.location?.name || typeof body?.weather?.temperature !== 'number') {
+    return new Response(JSON.stringify({ error: 'Invalid request body' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   const encoder = new TextEncoder()
+
   const stream = new ReadableStream({
     async start(controller) {
       try {

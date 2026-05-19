@@ -1,6 +1,5 @@
 'use client'
 
-import { useMemo } from 'react'
 
 interface WeatherBackgroundProps {
   backgroundKey: string
@@ -78,12 +77,9 @@ function SunGlow() {
 export function WeatherBackground({ backgroundKey, children }: WeatherBackgroundProps) {
   const style = BG_STYLES[backgroundKey] ?? BG_STYLES['clear-day']
 
-  const gradient = useMemo(() => {
-    if (style.via) {
-      return `linear-gradient(135deg, ${style.from}, ${style.via}, ${style.to})`
-    }
-    return `linear-gradient(135deg, ${style.from}, ${style.to})`
-  }, [style])
+  const gradient = style.via
+    ? `linear-gradient(135deg, ${style.from}, ${style.via}, ${style.to})`
+    : `linear-gradient(135deg, ${style.from}, ${style.to})`
 
   return (
     <div className="relative min-h-screen" style={{ background: gradient }}>

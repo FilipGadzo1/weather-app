@@ -25,7 +25,7 @@ export const useWeatherStore = create<WeatherStore>()(
       addSavedLocation: (city) => {
         const existing = get().savedLocations
         if (existing.length >= 5) return
-        if (existing.some((s) => s.name === city.name)) return
+        if (existing.some((s) => s.name === city.name && s.country === city.country)) return
         set({ savedLocations: [...existing, city] })
       },
       removeSavedLocation: (name) =>

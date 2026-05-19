@@ -3,10 +3,23 @@ import Anthropic from '@anthropic-ai/sdk'
 import { buildAlertPrompt } from '@/lib/claude/prompts'
 import type { GeoLocation, CurrentWeather } from '@/types/weather'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export async function POST(request: NextRequest) {
-  const body = await request.json() as { location: GeoLocation; weather: CurrentWeather }
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ error: 'AI features not configured' }, { status: 503 })
+  }
+
+  let body: { location: GeoLocation; weather: CurrentWeather }
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
+  }
+
+  if (!body?.location?.name || typeof body?.weather?.temperature !== 'number') {
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+  }
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   try {
     const message = await anthropic.messages.create({

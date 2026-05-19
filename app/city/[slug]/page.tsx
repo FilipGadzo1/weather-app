@@ -21,12 +21,18 @@ export default async function CityPage({ searchParams }: PageProps) {
     notFound()
   }
 
+  const latNum = parseFloat(lat)
+  const lonNum = parseFloat(lon)
+  if (isNaN(latNum) || isNaN(lonNum) || latNum < -90 || latNum > 90 || lonNum < -180 || lonNum > 180) {
+    notFound()
+  }
+
   const location: GeoLocation = {
     name: decodeURIComponent(name),
     country: decodeURIComponent(country),
     admin1: admin1 ? decodeURIComponent(admin1) : undefined,
-    lat: parseFloat(lat),
-    lon: parseFloat(lon),
+    lat: latNum,
+    lon: lonNum,
   }
 
   let weatherData
