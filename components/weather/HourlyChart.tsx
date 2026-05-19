@@ -4,7 +4,6 @@ import { toDisplayTemp } from '@/lib/store/weather-store'
 interface HourlyChartProps {
   hours: HourlyForecast[]
   unit: TemperatureUnit
-  timezone: string
 }
 
 const VIEW_W = 480

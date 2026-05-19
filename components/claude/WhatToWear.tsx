@@ -44,12 +44,7 @@ export function WhatToWear({ location, weather }: WhatToWearProps) {
       }
 
       const data: { text?: string } = await res.json()
-      const raw = (data.text ?? FALLBACK).trim()
-      const firstSentence = raw.split('. ')[0]
-      const sentence = firstSentence.endsWith('.')
-        ? firstSentence
-        : `${firstSentence}.`
-      setText(sentence)
+      setText(data.text?.trim() || FALLBACK)
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') return
       setText(FALLBACK)

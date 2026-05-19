@@ -20,7 +20,7 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
         sunTimes={{ sunrise: weatherData.daily[0]?.sunrise ?? null, sunset: weatherData.daily[0]?.sunset ?? null }}
         timezone={weatherData.timezone}
       />
-      <HourlyChart hours={next24} unit={temperatureUnit} timezone={weatherData.timezone} />
+      <HourlyChart hours={next24} unit={temperatureUnit} />
       <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} />
       <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
     </>
