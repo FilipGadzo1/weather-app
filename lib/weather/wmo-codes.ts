@@ -27,7 +27,7 @@ const WMO_MAP: Record<number, WmoInfo> = {
   99: { label: 'Thunderstorm with heavy hail', description: 'Thunderstorm with heavy hail', iconKey: 'storm', isSevere: true },
 }
 
-const FALLBACK: WmoInfo = { label: 'Unknown', description: 'Unknown conditions', iconKey: 'clear', isSevere: false }
+const FALLBACK: WmoInfo = { label: 'Unknown', description: 'Unknown conditions', iconKey: 'cloudy', isSevere: false }
 
 export function getWmoInfo(code: number): WmoInfo {
   return WMO_MAP[code] ?? FALLBACK
