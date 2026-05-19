@@ -1,4 +1,4 @@
-import type { CurrentWeather, GeoLocation } from '@/types/weather'
+import type { CurrentWeather, GeoLocation, TemperatureUnit } from '@/types/weather'
 import { getWmoInfo } from '@/lib/weather/wmo-codes'
 
 export function buildActivityPrompt(location: GeoLocation, weather: CurrentWeather): string {
@@ -35,4 +35,17 @@ Explain this weather condition in plain language. Cover:
 4. How long this type of condition typically lasts
 
 Keep it under 150 words. Be direct and helpful, not alarmist.`
+}
+
+export function buildWearPrompt(
+  location: GeoLocation,
+  weather: CurrentWeather,
+  unit: TemperatureUnit
+): string {
+  const t = unit === 'F'
+    ? `${Math.round(weather.temperature * 9 / 5 + 32)}°F (feels like ${Math.round(weather.feelsLike * 9 / 5 + 32)}°F)`
+    : `${Math.round(weather.temperature)}°C (feels like ${Math.round(weather.feelsLike)}°C)`
+  return `Weather in ${location.name}: ${t}, ${getWmoInfo(weather.wmoCode).label}, wind ${weather.windSpeed} km/h, precipitation chance ${weather.precipitationProbability}%.
+
+Reply with ONE short sentence (max 20 words) recommending what to wear today. No preamble. No list. Just the sentence.`
 }
