@@ -6,6 +6,7 @@ import { getBackgroundKey } from '@/lib/weather/wmo-codes'
 import { WeatherBackground } from '@/components/weather/WeatherBackground'
 import { ActivityAdvisor } from '@/components/claude/ActivityAdvisor'
 import { AlertExplainer } from '@/components/claude/AlertExplainer'
+import { WhatToWear } from '@/components/claude/WhatToWear'
 import { CityPageClient } from './CityPageClient'
 import { WeatherDisplay } from './WeatherDisplay'
 import AirQualityCard from '@/components/weather/AirQualityCard'
@@ -81,6 +82,8 @@ export default async function CityPage({ searchParams }: PageProps) {
           {weatherData.hasSevereCondition && (
             <AlertExplainer location={location} weather={weatherData.current} />
           )}
+
+          <WhatToWear location={location} weather={weatherData.current} />
 
           <ActivityAdvisor location={location} weather={weatherData.current} />
         </div>
