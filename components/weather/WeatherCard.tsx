@@ -27,7 +27,7 @@ export function WeatherCard({ location, weather, unit, sunTimes, timezone }: Wea
   const feelsLike = toDisplayTemp(weather.feelsLike, unit)
 
   const windDirs = ['N','NE','E','SE','S','SW','W','NW']
-  const windDir = windDirs[Math.round(weather.windDirection / 45) % 8]
+  const windDir = windDirs[((Math.round(weather.windDirection / 45) % 8) + 8) % 8]
 
   return (
     <div className="glass-card p-6 md:p-8">

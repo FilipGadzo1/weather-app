@@ -1,5 +1,3 @@
-'use client'
-
 import { AirQualityData } from '@/types/weather'
 import { getAqiCategory } from '@/lib/weather/aqi-scale'
 
