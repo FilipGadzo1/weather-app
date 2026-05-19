@@ -54,3 +54,10 @@ export interface WmoInfo {
 }
 
 export type TemperatureUnit = 'C' | 'F'
+
+export interface AirQualityData {
+  usAqi: number | null
+  pm25: number | null      // µg/m³
+  pm10: number | null      // µg/m³
+  europeanAqi: number | null
+}
