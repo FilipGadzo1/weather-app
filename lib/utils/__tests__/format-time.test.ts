@@ -16,4 +16,8 @@ describe('formatTimeInZone', () => {
     const out = formatTimeInZone('2026-05-19T10:30:00Z', 'Europe/Berlin')
     expect(out).toMatch(/12:30\s?PM/i)
   })
+
+  it('returns em-dash for invalid timezone', () => {
+    expect(formatTimeInZone('2026-05-19T10:30:00Z', 'auto')).toBe('—')
+  })
 })

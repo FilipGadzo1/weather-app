@@ -54,9 +54,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No city found at your location.' }, { status: 404 })
     }
 
+    const country = addr.country ?? ''
+    const SAFE_NAME = /^[\p{L}\p{N}\s'\-.,()]+$/u
+    if (!SAFE_NAME.test(name) || !SAFE_NAME.test(country)) {
+      return NextResponse.json({ error: 'No city found at your location.' }, { status: 404 })
+    }
+
     return NextResponse.json({
       name,
-      country: addr.country ?? '',
+      country,
       admin1: addr.state ?? addr.region ?? undefined,
     })
   } catch {
