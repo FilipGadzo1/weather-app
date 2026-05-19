@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-type GeoState = 'idle' | 'requesting' | 'locating' | 'reverse-geocoding' | 'error'
+type GeoState = 'idle' | 'requesting' | 'reverse-geocoding' | 'error'
 
 const ERROR_MESSAGES: Record<string, string> = {
   PERMISSION_DENIED: 'Location access denied. Search for a city instead.',
@@ -16,10 +16,13 @@ export default function UseMyLocationButton() {
   const router = useRouter()
   const [state, setState] = useState<GeoState>('idle')
   const [error, setError] = useState<string | null>(null)
+  const [supported, setSupported] = useState(false)
 
-  if (typeof window === 'undefined' || !('geolocation' in navigator)) {
-    return null
-  }
+  useEffect(() => {
+    setSupported('geolocation' in navigator)
+  }, [])
+
+  if (!supported) return null
 
   function handleClick() {
     setState('requesting')
@@ -45,7 +48,7 @@ export default function UseMyLocationButton() {
             return
           }
           const slug = encodeURIComponent(data.name.toLowerCase().replace(/\s+/g, '-'))
-          router.push(`/city/${slug}?name=${encodeURIComponent(data.name)}&lat=${lat}&lon=${lon}`)
+          router.push(`/city/${slug}?name=${encodeURIComponent(data.name)}&lat=${lat}&lon=${lon}&country=${encodeURIComponent(data.country)}`)
           setState('idle')
         } catch {
           setError(ERROR_MESSAGES.GEOCODE_FAIL)
@@ -64,7 +67,7 @@ export default function UseMyLocationButton() {
     )
   }
 
-  const isLoading = state === 'requesting' || state === 'locating' || state === 'reverse-geocoding'
+  const isLoading = state === 'requesting' || state === 'reverse-geocoding'
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -75,7 +78,6 @@ export default function UseMyLocationButton() {
       >
         <span className="text-lg">{isLoading ? '⏳' : '📍'}</span>
         {state === 'requesting' && 'Requesting location…'}
-        {state === 'locating' && 'Getting coordinates…'}
         {state === 'reverse-geocoding' && 'Finding city…'}
         {(state === 'idle' || state === 'error') && 'Use My Location'}
       </button>
