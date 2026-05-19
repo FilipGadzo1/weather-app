@@ -17,6 +17,9 @@ export interface CurrentWeather {
   wmoCode: number
   isDay: boolean
   precipitationProbability: number  // %
+  pressure: number | null      // hPa
+  cloudCover: number | null    // %
+  dewPoint: number | null      // °C
 }
 
 export interface DailyForecast {

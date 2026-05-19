@@ -7,6 +7,7 @@ const CURRENT_PARAMS = [
   'temperature_2m', 'apparent_temperature', 'relative_humidity_2m',
   'wind_speed_10m', 'wind_direction_10m', 'uv_index', 'visibility',
   'weather_code', 'is_day', 'precipitation_probability',
+  'surface_pressure', 'cloud_cover', 'dew_point_2m',
 ].join(',')
 
 const DAILY_PARAMS = [
@@ -73,6 +74,9 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
       wmoCode: c.weather_code,
       isDay: c.is_day === 1,
       precipitationProbability: c.precipitation_probability,
+      pressure: c.surface_pressure ?? null,
+      cloudCover: c.cloud_cover ?? null,
+      dewPoint: c.dew_point_2m ?? null,
     },
     daily,
     timezone: data.timezone,

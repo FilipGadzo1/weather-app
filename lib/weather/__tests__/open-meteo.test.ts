@@ -28,6 +28,9 @@ describe('parseWeatherResponse', () => {
         weather_code: 2,
         is_day: 1,
         precipitation_probability: 10,
+        surface_pressure: 1013,
+        cloud_cover: 40,
+        dew_point_2m: 12,
       },
       daily: {
         time: ['2026-05-19'],
@@ -70,6 +73,9 @@ describe('parseWeatherResponse', () => {
         weather_code: 95,
         is_day: 1,
         precipitation_probability: 90,
+        surface_pressure: 998,
+        cloud_cover: 95,
+        dew_point_2m: 19,
       },
       daily: {
         time: ['2026-05-19'],
@@ -84,5 +90,48 @@ describe('parseWeatherResponse', () => {
     }
     const result = parseWeatherResponse(mockApiResponse, mockLocation)
     expect(result.hasSevereCondition).toBe(true)
+  })
+
+  it('parses extended atmospheric fields', () => {
+    const mockApiResponse = {
+      timezone: 'Europe/London',
+      current: {
+        temperature_2m: 18, apparent_temperature: 16, relative_humidity_2m: 70,
+        wind_speed_10m: 15, wind_direction_10m: 270, uv_index: 3,
+        visibility: 10000, weather_code: 2, is_day: 1, precipitation_probability: 10,
+        surface_pressure: 1013, cloud_cover: 40, dew_point_2m: 12,
+      },
+      daily: {
+        time: ['2026-05-19'], temperature_2m_max: [20], temperature_2m_min: [12],
+        weather_code: [2], precipitation_probability_max: [10],
+        sunrise: ['2026-05-19T05:30'], sunset: ['2026-05-19T21:00'],
+      },
+      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [] },
+    }
+    const result = parseWeatherResponse(mockApiResponse, mockLocation)
+    expect(result.current.pressure).toBe(1013)
+    expect(result.current.cloudCover).toBe(40)
+    expect(result.current.dewPoint).toBe(12)
+  })
+
+  it('handles missing atmospheric fields as null', () => {
+    const mockApiResponse = {
+      timezone: 'Europe/London',
+      current: {
+        temperature_2m: 18, apparent_temperature: 16, relative_humidity_2m: 70,
+        wind_speed_10m: 15, wind_direction_10m: 270, uv_index: 3,
+        visibility: 10000, weather_code: 2, is_day: 1, precipitation_probability: 10,
+      },
+      daily: {
+        time: ['2026-05-19'], temperature_2m_max: [20], temperature_2m_min: [12],
+        weather_code: [2], precipitation_probability_max: [10],
+        sunrise: ['2026-05-19T05:30'], sunset: ['2026-05-19T21:00'],
+      },
+      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [] },
+    }
+    const result = parseWeatherResponse(mockApiResponse, mockLocation)
+    expect(result.current.pressure).toBeNull()
+    expect(result.current.cloudCover).toBeNull()
+    expect(result.current.dewPoint).toBeNull()
   })
 })
