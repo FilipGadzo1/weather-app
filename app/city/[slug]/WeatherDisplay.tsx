@@ -13,6 +13,8 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
         location={weatherData.location}
         weather={weatherData.current}
         unit={temperatureUnit}
+        sunTimes={{ sunrise: weatherData.daily[0]?.sunrise ?? null, sunset: weatherData.daily[0]?.sunset ?? null }}
+        timezone={weatherData.timezone}
       />
       <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
     </>
