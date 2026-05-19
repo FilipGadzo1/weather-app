@@ -1,12 +1,15 @@
 import type { CurrentWeather, GeoLocation, TemperatureUnit } from '@/types/weather'
 import { getWmoInfo } from '@/lib/weather/wmo-codes'
 import { toDisplayTemp } from '@/lib/store/weather-store'
+import { formatTimeInZone } from '@/lib/utils/format-time'
 import { WeatherIcon } from './WeatherIcon'
 
 interface WeatherCardProps {
   location: GeoLocation
   weather: CurrentWeather
   unit: TemperatureUnit
+  sunTimes: { sunrise: string | null; sunset: string | null }
+  timezone: string
 }
 
 function StatPill({ label, value }: { label: string; value: string }) {
@@ -18,7 +21,7 @@ function StatPill({ label, value }: { label: string; value: string }) {
   )
 }
 
-export function WeatherCard({ location, weather, unit }: WeatherCardProps) {
+export function WeatherCard({ location, weather, unit, sunTimes, timezone }: WeatherCardProps) {
   const info = getWmoInfo(weather.wmoCode)
   const temp = toDisplayTemp(weather.temperature, unit)
   const feelsLike = toDisplayTemp(weather.feelsLike, unit)
@@ -52,12 +55,14 @@ export function WeatherCard({ location, weather, unit }: WeatherCardProps) {
         Feels like {feelsLike}°{unit}
       </p>
 
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-6">
+      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 mt-6">
         <StatPill label="Humidity" value={`${weather.humidity}%`} />
         <StatPill label="Wind" value={`${weather.windSpeed} km/h ${windDir}`} />
         <StatPill label="UV" value={String(weather.uvIndex)} />
         <StatPill label="Visibility" value={`${weather.visibility} km`} />
         <StatPill label="Precip." value={`${weather.precipitationProbability}%`} />
+        <StatPill label="🌅 Sunrise" value={formatTimeInZone(sunTimes.sunrise, timezone)} />
+        <StatPill label="🌇 Sunset" value={formatTimeInZone(sunTimes.sunset, timezone)} />
       </div>
     </div>
   )
