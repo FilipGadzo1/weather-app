@@ -23,8 +23,10 @@ export async function POST(request: NextRequest) {
     })
   }
 
+  const locationName = String(body?.location?.name ?? '').trim()
   if (
-    !body?.location?.name ||
+    !locationName ||
+    locationName.length > 100 ||
     typeof body?.weather?.temperature !== 'number' ||
     (body.unit !== 'C' && body.unit !== 'F')
   ) {
