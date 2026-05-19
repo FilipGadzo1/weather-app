@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { fetchWeather } from '@/lib/weather/open-meteo'
+import { fetchAirQuality } from '@/lib/weather/air-quality'
 import { getBackgroundKey } from '@/lib/weather/wmo-codes'
 import { WeatherBackground } from '@/components/weather/WeatherBackground'
 import { ActivityAdvisor } from '@/components/claude/ActivityAdvisor'
 import { AlertExplainer } from '@/components/claude/AlertExplainer'
 import { CityPageClient } from './CityPageClient'
 import { WeatherDisplay } from './WeatherDisplay'
-import type { GeoLocation } from '@/types/weather'
+import AirQualityCard from '@/components/weather/AirQualityCard'
+import type { GeoLocation, AirQualityData } from '@/types/weather'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -35,10 +37,12 @@ export default async function CityPage({ searchParams }: PageProps) {
     lon: lonNum,
   }
 
-  let weatherData
-  try {
-    weatherData = await fetchWeather(location.lat, location.lon, location)
-  } catch {
+  const [weatherResult, aqiResult] = await Promise.allSettled([
+    fetchWeather(latNum, lonNum, location),
+    fetchAirQuality(latNum, lonNum),
+  ])
+
+  if (weatherResult.status === 'rejected') {
     return (
       <WeatherBackground backgroundKey="cloudy">
         <div className="min-h-screen flex items-center justify-center px-4">
@@ -52,6 +56,10 @@ export default async function CityPage({ searchParams }: PageProps) {
       </WeatherBackground>
     )
   }
+  const weatherData = weatherResult.value
+
+  const airQuality: AirQualityData | null =
+    aqiResult.status === 'fulfilled' ? aqiResult.value : null
 
   const bgKey = getBackgroundKey(weatherData.current.wmoCode, weatherData.current.isDay)
 
@@ -67,6 +75,8 @@ export default async function CityPage({ searchParams }: PageProps) {
 
         <div className="space-y-4">
           <WeatherDisplay weatherData={weatherData} />
+
+          {airQuality && <AirQualityCard data={airQuality} />}
 
           {weatherData.hasSevereCondition && (
             <AlertExplainer location={location} weather={weatherData.current} />
