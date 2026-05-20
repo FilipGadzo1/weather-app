@@ -10,6 +10,7 @@ import { WhatToWear } from '@/components/claude/WhatToWear'
 import { CityPageClient } from './CityPageClient'
 import { WeatherDisplay } from './WeatherDisplay'
 import AirQualityCard from '@/components/weather/AirQualityCard'
+import { UvIndexCard } from '@/components/weather/UvIndexCard'
 import type { GeoLocation, AirQualityData } from '@/types/weather'
 
 interface PageProps {
@@ -78,6 +79,8 @@ export default async function CityPage({ searchParams }: PageProps) {
           <WeatherDisplay weatherData={weatherData} />
 
           {airQuality && <AirQualityCard data={airQuality} />}
+
+          <UvIndexCard uvIndex={weatherData.current.uvIndex} />
 
           {weatherData.hasSevereCondition && (
             <AlertExplainer location={location} weather={weatherData.current} />
