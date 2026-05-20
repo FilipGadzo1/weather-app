@@ -1,8 +1,11 @@
+import type { ReactNode } from 'react'
 import type { CurrentWeather, GeoLocation, TemperatureUnit } from '@/types/weather'
 import { getWmoInfo } from '@/lib/weather/wmo-codes'
 import { toDisplayTemp } from '@/lib/store/weather-store'
 import { formatTimeInZone } from '@/lib/utils/format-time'
 import { WeatherIcon } from './WeatherIcon'
+import { WindCompass } from './WindCompass'
+import { FeelScoreBadge } from './FeelScoreBadge'
 
 interface WeatherCardProps {
   location: GeoLocation
@@ -12,11 +15,12 @@ interface WeatherCardProps {
   timezone: string
 }
 
-function StatPill({ label, value }: { label: string; value: string }) {
+function StatPill({ label, value, children }: { label: string; value: string; children?: ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-0.5 p-3 glass-card-dark">
       <span className="text-xs text-white/60 uppercase tracking-wider">{label}</span>
       <span className="text-sm font-semibold text-white">{value}</span>
+      {children}
     </div>
   )
 }
@@ -54,10 +58,17 @@ export function WeatherCard({ location, weather, unit, sunTimes, timezone }: Wea
       <p className="text-white/60 text-sm mt-1">
         Feels like {feelsLike}°{unit}
       </p>
+      <FeelScoreBadge
+        feelsLikeC={weather.feelsLike}
+        humidity={weather.humidity}
+        windSpeed={weather.windSpeed}
+      />
 
       <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 mt-6">
         <StatPill label="Humidity" value={`${weather.humidity}%`} />
-        <StatPill label="Wind" value={`${weather.windSpeed} km/h ${windDir}`} />
+        <StatPill label="Wind" value={`${weather.windSpeed} km/h ${windDir}`}>
+          <WindCompass degrees={weather.windDirection} />
+        </StatPill>
         <StatPill label="UV" value={String(weather.uvIndex)} />
         <StatPill label="Visibility" value={`${weather.visibility} km`} />
         <StatPill label="Precip." value={`${weather.precipitationProbability}%`} />
