@@ -1,4 +1,4 @@
-import { AirQualityData } from '@/types/weather'
+import type { AirQualityData } from '@/types/weather'
 import { getAqiCategory } from '@/lib/weather/aqi-scale'
 
 interface AirQualityCardProps {
@@ -6,7 +6,7 @@ interface AirQualityCardProps {
 }
 
 export default function AirQualityCard({ data }: AirQualityCardProps) {
-  if (data.usAqi === null) return null
+  if (data.usAqi === null || data.usAqi < 0) return null
 
   const category = getAqiCategory(data.usAqi)
 
@@ -37,6 +37,20 @@ export default function AirQualityCard({ data }: AirQualityCardProps) {
             </span>
             <span className="text-white/40 text-xs">µg/m³</span>
           </div>
+        </div>
+      </div>
+      {/* AQI Progress bar */}
+      <div className="mt-4">
+        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all ${category.barClass}`}
+            style={{ width: `${Math.min(Math.max((data.usAqi / 500) * 100, 0), 100)}%` }}
+          />
+        </div>
+        <div className="flex justify-between mt-1">
+          <span className="text-white/40 text-xs">0</span>
+          <span className="text-white/40 text-xs">250</span>
+          <span className="text-white/40 text-xs">500</span>
         </div>
       </div>
     </div>
