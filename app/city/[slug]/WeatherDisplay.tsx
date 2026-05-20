@@ -35,7 +35,7 @@ function SectionLabel({ children }: { children: ReactNode }) {
   )
 }
 
-export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
+export function WeatherDisplay({ weatherData, backgroundKey }: { weatherData: WeatherData; backgroundKey: string }) {
   const { temperatureUnit } = useWeatherStore()
   const next24 = getNext24Hours(weatherData)
   return (
@@ -47,6 +47,7 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
         unit={temperatureUnit}
         sunTimes={{ sunrise: weatherData.daily[0]?.sunrise ?? null, sunset: weatherData.daily[0]?.sunset ?? null }}
         timezone={weatherData.timezone}
+        backgroundKey={backgroundKey}
       />
 
       {/* ── Today ──────────────────────────────────── */}

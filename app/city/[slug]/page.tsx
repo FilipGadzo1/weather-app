@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import { fetchWeather } from '@/lib/weather/open-meteo'
 import { fetchAirQuality } from '@/lib/weather/air-quality'
 import { getBackgroundKey } from '@/lib/weather/wmo-codes'
-import { WeatherBackground } from '@/components/weather/WeatherBackground'
 import { ActivityAdvisor } from '@/components/claude/ActivityAdvisor'
 import { AlertExplainer } from '@/components/claude/AlertExplainer'
 import { WhatToWear } from '@/components/claude/WhatToWear'
@@ -46,16 +45,14 @@ export default async function CityPage({ searchParams }: PageProps) {
 
   if (weatherResult.status === 'rejected') {
     return (
-      <WeatherBackground backgroundKey="cloudy">
-        <div className="min-h-screen flex items-center justify-center px-4 max-w-5xl mx-auto">
-          <div className="glass-card p-8 text-center max-w-md">
-            <p className="text-4xl mb-4">⚠️</p>
-            <h2 className="text-white text-xl font-semibold mb-2">Weather data unavailable</h2>
-            <p className="text-white/60 text-sm">Unable to fetch forecast for {location.name}. Please try again.</p>
-            <Link href="/" className="mt-4 inline-block text-sky-400 hover:text-sky-300 text-sm">← Back to search</Link>
-          </div>
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'linear-gradient(160deg, #080d1a 0%, #0d1525 100%)' }}>
+        <div className="glass-card p-8 text-center max-w-md">
+          <p className="text-4xl mb-4">⚠️</p>
+          <h2 className="text-white text-xl font-semibold mb-2">Weather data unavailable</h2>
+          <p className="text-white/60 text-sm">Unable to fetch forecast for {location.name}. Please try again.</p>
+          <Link href="/" className="mt-4 inline-block text-sky-400 hover:text-sky-300 text-sm">← Back to search</Link>
         </div>
-      </WeatherBackground>
+      </div>
     )
   }
   const weatherData = weatherResult.value
@@ -66,8 +63,8 @@ export default async function CityPage({ searchParams }: PageProps) {
   const bgKey = getBackgroundKey(weatherData.current.wmoCode, weatherData.current.isDay)
 
   return (
-    <WeatherBackground backgroundKey={bgKey}>
-      <div className="min-h-screen px-4 py-6 max-w-5xl mx-auto">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #080d1a 0%, #0d1525 100%)' }}>
+      <div className="px-4 py-6 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
@@ -85,7 +82,7 @@ export default async function CityPage({ searchParams }: PageProps) {
         </div>
 
         <div className="space-y-4">
-          <WeatherDisplay weatherData={weatherData} />
+          <WeatherDisplay weatherData={weatherData} backgroundKey={bgKey} />
 
           {airQuality && <AirQualityCard data={airQuality} />}
 
@@ -100,6 +97,6 @@ export default async function CityPage({ searchParams }: PageProps) {
           <ActivityAdvisor location={location} weather={weatherData.current} />
         </div>
       </div>
-    </WeatherBackground>
+    </div>
   )
 }
