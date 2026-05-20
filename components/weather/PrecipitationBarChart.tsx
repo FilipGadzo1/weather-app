@@ -1,3 +1,5 @@
+'use client'
+
 import type { DailyForecast } from '@/types/weather'
 
 interface PrecipitationBarChartProps {

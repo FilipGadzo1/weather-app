@@ -7,7 +7,8 @@ interface UvIndexCardProps {
 export function UvIndexCard({ uvIndex }: UvIndexCardProps) {
   if (uvIndex == null || uvIndex < 0) return null
 
-  const band = getUvBand(uvIndex)
+  const rounded = Math.round(uvIndex)
+  const band = getUvBand(rounded)
 
   return (
     <div className="glass-card p-4">
@@ -17,7 +18,7 @@ export function UvIndexCard({ uvIndex }: UvIndexCardProps) {
       <div className="flex items-center gap-4">
         <div className="flex flex-col items-center">
           <span className={`text-5xl font-bold tabular-nums ${band.textClass}`}>
-            {Math.round(uvIndex)}
+            {rounded}
           </span>
           <span className={`inline-block mt-2 px-2 py-0.5 rounded-full text-xs ${band.bgClass} ${band.textClass}`}>
             {band.label}
