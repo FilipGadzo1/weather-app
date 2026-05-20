@@ -25,6 +25,7 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
   const next24 = getNext24Hours(weatherData)
   return (
     <>
+      {/* Hero card – full width */}
       <WeatherCard
         location={weatherData.location}
         weather={weatherData.current}
@@ -32,21 +33,45 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
         sunTimes={{ sunrise: weatherData.daily[0]?.sunrise ?? null, sunset: weatherData.daily[0]?.sunset ?? null }}
         timezone={weatherData.timezone}
       />
+
+      {/* 24-hour temperature chart – full width */}
       <HourlyChart hours={next24} unit={temperatureUnit} />
-      <HourlyWindStrip hours={next24} />
-      <HourlyConditionStrip hours={next24} timezone={weatherData.timezone} />
-      <HourlyHumidityChart hours={next24} />
-      <HourlyUvChart hours={next24} />
+
+      {/* Hourly detail – 2-col on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <HourlyWindStrip hours={next24} />
+        <HourlyConditionStrip hours={next24} timezone={weatherData.timezone} />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <HourlyHumidityChart hours={next24} />
+        <HourlyUvChart hours={next24} />
+      </div>
       <HourlyPrecipChart hours={next24} />
-      <WeatherSummaryCard weather={weatherData.current} daily={weatherData.daily} unit={temperatureUnit} />
-      <BestTimeCard hours={next24} />
+
+      {/* Summary + best time – 2-col on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <WeatherSummaryCard weather={weatherData.current} daily={weatherData.daily} unit={temperatureUnit} />
+        <BestTimeCard hours={next24} />
+      </div>
+
+      {/* Atmosphere – full width */}
       <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} daily={weatherData.daily} />
+
+      {/* Week overview – full width */}
       <WeekSparkline daily={weatherData.daily} unit={temperatureUnit} />
       <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
-      <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
-      <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
-      <MoonPhaseCard />
-      <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
+
+      {/* Sun + precipitation – 2-col on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
+        <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
+      </div>
+
+      {/* Moon + tomorrow – 2-col on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <MoonPhaseCard />
+        <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
+      </div>
     </>
   )
 }

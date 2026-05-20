@@ -72,8 +72,8 @@ export function SunriseSunsetCard({ daily, timezone }: SunriseSunsetCardProps) {
       </svg>
       <div className="grid grid-cols-3 mt-3 text-center">
         <div>
-          <span>🌅</span>
-          <p className="text-white/80 text-sm mt-1">{formatTime(sunrise, timezone)}</p>
+          <span className="text-xl">🌅</span>
+          <p className="text-white/80 text-sm mt-1 font-semibold" style={{ fontFamily: 'var(--font-outfit)' }}>{formatTime(sunrise, timezone)}</p>
           <p className="text-white/50 text-xs">Sunrise</p>
         </div>
         <div>
@@ -81,8 +81,8 @@ export function SunriseSunsetCard({ daily, timezone }: SunriseSunsetCardProps) {
           <p className="text-white/50 text-xs">Daylight</p>
         </div>
         <div>
-          <span>🌇</span>
-          <p className="text-white/80 text-sm mt-1">{formatTime(sunset, timezone)}</p>
+          <span className="text-xl">🌇</span>
+          <p className="text-white/80 text-sm mt-1 font-semibold" style={{ fontFamily: 'var(--font-outfit)' }}>{formatTime(sunset, timezone)}</p>
           <p className="text-white/50 text-xs">Sunset</p>
         </div>
       </div>

@@ -50,19 +50,19 @@ export function TomorrowCard({ daily, unit, timezone }: TomorrowCardProps) {
         <div className="grid grid-cols-2 gap-x-6 gap-y-2 flex-1">
           <div>
             <p className="text-white/50 text-xs uppercase">High</p>
-            <p className="text-orange-300 text-lg font-semibold">{toDisplayTemp(tomorrow.tempMax, unit)}°{unit}</p>
+            <p className="text-orange-300 text-xl font-semibold" style={{ fontFamily: 'var(--font-playfair)' }}>{toDisplayTemp(tomorrow.tempMax, unit)}°{unit}</p>
           </div>
           <div>
             <p className="text-white/50 text-xs uppercase">Low</p>
-            <p className="text-sky-300 text-lg font-semibold">{toDisplayTemp(tomorrow.tempMin, unit)}°{unit}</p>
+            <p className="text-sky-300 text-xl font-semibold" style={{ fontFamily: 'var(--font-playfair)' }}>{toDisplayTemp(tomorrow.tempMin, unit)}°{unit}</p>
           </div>
           <div>
             <p className="text-white/50 text-xs uppercase">Rain</p>
-            <p className="text-blue-300 text-lg font-semibold">{tomorrow.precipitationProbability}%</p>
+            <p className="text-blue-300 text-xl font-semibold">{tomorrow.precipitationProbability}%</p>
           </div>
           <div>
             <p className="text-white/50 text-xs uppercase">Sunrise</p>
-            <p className="text-white/80 text-lg font-semibold">{sunriseLabel}</p>
+            <p className="text-white/80 text-xl font-semibold">{sunriseLabel}</p>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ export function WeatherSummaryCard({ weather, daily, unit }: WeatherSummaryCardP
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider">
         At a Glance
       </h2>
-      <p className="text-white/80 text-sm leading-relaxed mt-2">{summary}</p>
+      <p className="text-white/80 text-base leading-relaxed mt-2 border-l-2 border-white/20 pl-3">{summary}</p>
     </div>
   )
 }

@@ -28,7 +28,7 @@ export function HourlyConditionStrip({ hours, timezone }: HourlyConditionStripPr
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">
         Conditions
       </h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto scrollbar-hide">
         <div className="flex gap-3 min-w-max pb-1">
           {slice.map((h, i) => {
             const info = getWmoInfo(h.wmoCode)
@@ -36,7 +36,7 @@ export function HourlyConditionStrip({ hours, timezone }: HourlyConditionStripPr
             const condWord = info.label.split(' ')[0]
             return (
               <div key={h.time} className="flex flex-col items-center gap-1.5 w-14">
-                <span className="text-white/50 text-xs">{label}</span>
+                <span className="text-white/50 text-xs" style={{ fontFamily: 'var(--font-outfit)' }}>{label}</span>
                 <WeatherIcon iconKey={info.iconKey} size={28} />
                 <span className="text-white/60 text-xs text-center">{condWord}</span>
               </div>

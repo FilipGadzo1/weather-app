@@ -2,6 +2,7 @@ import type { CurrentWeather, DailyForecast, TemperatureUnit } from '@/types/wea
 import { toDisplayTemp } from '@/lib/store/weather-store'
 import { getPressureTrend } from '@/lib/weather/pressure-trend'
 import { DewPointBadge } from './DewPointBadge'
+import { Thermometer, Cloud, Droplets, Eye } from 'lucide-react'
 
 interface ExtendedStatsCardProps {
   weather: CurrentWeather
@@ -9,12 +10,12 @@ interface ExtendedStatsCardProps {
   daily?: DailyForecast[]
 }
 
-function StatBlock({ emoji, label, value, suffix, children }: {
-  emoji: string; label: string; value: string; suffix?: React.ReactNode; children?: React.ReactNode
+function StatBlock({ icon, label, value, suffix, children }: {
+  icon: React.ReactNode; label: string; value: string; suffix?: React.ReactNode; children?: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 p-3 glass-card-dark rounded-xl">
-      <span className="text-xl" aria-hidden="true">{emoji}</span>
+    <div className="flex flex-col items-center gap-1 p-3 glass-card-stat rounded-xl">
+      <span aria-hidden="true">{icon}</span>
       <span className="text-xs text-white/60 uppercase tracking-wider text-center">{label}</span>
       <span className="text-sm font-semibold text-white">
         {value}{suffix}
@@ -49,12 +50,12 @@ export function ExtendedStatsCard({ weather, unit, daily }: ExtendedStatsCardPro
         Atmosphere
       </h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatBlock emoji="🌡️" label="Pressure" value={pressureValue} suffix={trendSuffix} />
-        <StatBlock emoji="☁️" label="Cloud Cover" value={cloudValue} />
-        <StatBlock emoji="💧" label="Dew Point" value={dewValue}>
+        <StatBlock icon={<Thermometer size={16} className="text-white/50" />} label="Pressure" value={pressureValue} suffix={trendSuffix} />
+        <StatBlock icon={<Cloud size={16} className="text-white/50" />} label="Cloud Cover" value={cloudValue} />
+        <StatBlock icon={<Droplets size={16} className="text-white/50" />} label="Dew Point" value={dewValue}>
           <DewPointBadge dewPointC={dewPoint} />
         </StatBlock>
-        <StatBlock emoji="👁️" label="Visibility" value={visibilityValue} />
+        <StatBlock icon={<Eye size={16} className="text-white/50" />} label="Visibility" value={visibilityValue} />
       </div>
     </div>
   )
