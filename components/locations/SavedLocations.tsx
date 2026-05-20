@@ -30,7 +30,7 @@ export function SavedLocations() {
             📍 {city.name}
           </button>
           <button
-            onClick={() => removeSavedLocation(city.name)}
+            onClick={() => removeSavedLocation(city.name, city.country)}
             className="text-white/30 hover:text-white/70 text-xs ml-1 transition-colors"
             aria-label={`Remove ${city.name}`}
           >

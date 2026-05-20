@@ -11,9 +11,9 @@ interface WeatherStore {
   recentSearches: GeoLocation[]
   setCurrentCity: (city: GeoLocation) => void
   addSavedLocation: (city: GeoLocation) => void
-  removeSavedLocation: (name: string) => void
+  removeSavedLocation: (name: string, country: string) => void
   toggleTemperatureUnit: () => void
-  isSaved: (name: string) => boolean
+  isSaved: (name: string, country: string) => boolean
   addRecentSearch: (city: GeoLocation) => void
   clearRecentSearches: () => void
 }
@@ -32,11 +32,11 @@ export const useWeatherStore = create<WeatherStore>()(
         if (existing.some((s) => s.name === city.name && s.country === city.country)) return
         set({ savedLocations: [...existing, city] })
       },
-      removeSavedLocation: (name) =>
-        set({ savedLocations: get().savedLocations.filter((s) => s.name !== name) }),
+      removeSavedLocation: (name, country) =>
+        set({ savedLocations: get().savedLocations.filter((s) => !(s.name === name && s.country === country)) }),
       toggleTemperatureUnit: () =>
         set({ temperatureUnit: get().temperatureUnit === 'C' ? 'F' : 'C' }),
-      isSaved: (name) => get().savedLocations.some((s) => s.name === name),
+      isSaved: (name, country) => get().savedLocations.some((s) => s.name === name && s.country === country),
       addRecentSearch: (city) => {
         const filtered = get().recentSearches.filter(
           (s) => !(s.name === city.name && s.country === city.country)

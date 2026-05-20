@@ -42,7 +42,7 @@ export function RecentSearches() {
       <div className="flex flex-wrap gap-2">
         {recentSearches.map((city) => (
           <button
-            key={`${city.name}-${city.country}`}
+            key={`${city.name}-${city.country}-${city.lat}-${city.lon}`}
             onClick={() => handleClick(city)}
             className="glass-card px-3 py-1.5 text-sm text-white/80 hover:bg-white/15 transition-colors rounded-xl"
           >
