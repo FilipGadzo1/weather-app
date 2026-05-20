@@ -19,8 +19,11 @@ export function HourlyChart({ hours, unit }: HourlyChartProps) {
   }
 
   const temps = hours.map((h) => toDisplayTemp(h.temperature, unit))
-  const tMin = Math.min(...temps)
-  const tMax = Math.max(...temps)
+  const feelsLikeTemps = hours.map(h => toDisplayTemp(h.apparentTemperature, unit))
+
+  const allTemps = [...temps, ...feelsLikeTemps].filter(Number.isFinite)
+  const tMin = allTemps.length ? Math.min(...allTemps) : 0
+  const tMax = allTemps.length ? Math.max(...allTemps) : 1
   const tRange = Math.max(1, tMax - tMin)
 
   const xAt = (i: number) =>
@@ -29,6 +32,10 @@ export function HourlyChart({ hours, unit }: HourlyChartProps) {
     PAD_TOP + LINE_AREA_H - ((t - tMin) / tRange) * LINE_AREA_H
 
   const points = temps
+    .map((t, i) => `${xAt(i).toFixed(1)},${yAtTemp(t).toFixed(1)}`)
+    .join(' ')
+
+  const feelsPoints = feelsLikeTemps
     .map((t, i) => `${xAt(i).toFixed(1)},${yAtTemp(t).toFixed(1)}`)
     .join(' ')
 
@@ -46,15 +53,27 @@ export function HourlyChart({ hours, unit }: HourlyChartProps) {
 
   return (
     <div className="glass-card p-4">
-      <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-4">
-        Next 24 Hours
-      </h2>
+      <div className="flex items-start justify-between mb-4">
+        <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider">
+          Next 24 Hours
+        </h2>
+        <div className="flex gap-3">
+          <span className="flex items-center gap-1.5 text-xs text-white/50">
+            <svg width="16" height="4"><line x1="0" y1="2" x2="16" y2="2" stroke="rgba(255,255,255,0.8)" strokeWidth="2"/></svg>
+            Temp
+          </span>
+          <span className="flex items-center gap-1.5 text-xs text-white/50">
+            <svg width="16" height="4"><line x1="0" y1="2" x2="16" y2="2" stroke="rgba(251,146,60,0.7)" strokeWidth="1.5" strokeDasharray="4 3"/></svg>
+            Feels like
+          </span>
+        </div>
+      </div>
       <svg
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         className="w-full"
         preserveAspectRatio="none"
         role="img"
-        aria-label="24-hour temperature and precipitation chart"
+        aria-label="24-hour temperature, feels-like, and precipitation chart"
       >
         {hours.map((h, i) => {
           if (h.precipitationProbability <= 0) return null
@@ -73,6 +92,16 @@ export function HourlyChart({ hours, unit }: HourlyChartProps) {
             />
           )
         })}
+
+        <polyline
+          points={feelsPoints}
+          fill="none"
+          stroke="rgba(251,146,60,0.7)"
+          strokeWidth="1.5"
+          strokeDasharray="4 3"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
 
         <polyline
           points={points}

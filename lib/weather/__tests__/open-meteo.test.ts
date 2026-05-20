@@ -47,6 +47,8 @@ describe('parseWeatherResponse', () => {
         weather_code: [2],
         precipitation_probability: [5],
         wind_speed_10m: [10],
+        relative_humidity_2m: [65],
+        surface_pressure: [1013],
       },
     }
 
@@ -86,7 +88,7 @@ describe('parseWeatherResponse', () => {
         sunrise: ['2026-05-19T05:30'],
         sunset: ['2026-05-19T21:00'],
       },
-      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [] },
+      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [], relative_humidity_2m: [], surface_pressure: [] },
     }
     const result = parseWeatherResponse(mockApiResponse, mockLocation)
     expect(result.hasSevereCondition).toBe(true)
@@ -106,7 +108,7 @@ describe('parseWeatherResponse', () => {
         weather_code: [2], precipitation_probability_max: [10],
         sunrise: ['2026-05-19T05:30'], sunset: ['2026-05-19T21:00'],
       },
-      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [] },
+      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [], relative_humidity_2m: [], surface_pressure: [] },
     }
     const result = parseWeatherResponse(mockApiResponse, mockLocation)
     expect(result.current.pressure).toBe(1013)
@@ -127,7 +129,7 @@ describe('parseWeatherResponse', () => {
         weather_code: [2], precipitation_probability_max: [10],
         sunrise: ['2026-05-19T05:30'], sunset: ['2026-05-19T21:00'],
       },
-      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [] },
+      hourly: { time: [], temperature_2m: [], weather_code: [], precipitation_probability: [], wind_speed_10m: [], relative_humidity_2m: [], surface_pressure: [] },
     }
     const result = parseWeatherResponse(mockApiResponse, mockLocation)
     expect(result.current.pressure).toBeNull()

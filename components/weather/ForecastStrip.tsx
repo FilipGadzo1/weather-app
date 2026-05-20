@@ -108,7 +108,9 @@ export function ForecastStrip({ daily, unit }: ForecastStripProps) {
                   <span className="text-white/50 text-xs">{time}</span>
                   <WeatherIcon iconKey={info.iconKey} size={20} />
                   <span className="text-white text-sm font-medium">{toDisplayTemp(hour.temperature, unit)}°</span>
-                  <span className="text-white/40 text-xs">{hour.precipitationProbability}%</span>
+                  <span className="text-white/40 text-xs">{hour.precipitationProbability}% 🌧</span>
+                  <span className="text-white/40 text-xs">{Number.isFinite(hour.windSpeed) ? Math.round(hour.windSpeed) : 0} km/h</span>
+                  <span className="text-white/40 text-xs">{Number.isFinite(hour.humidity) ? hour.humidity : 0}% 💧</span>
                 </div>
               )
             })}

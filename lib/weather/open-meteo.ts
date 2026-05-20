@@ -16,7 +16,7 @@ const DAILY_PARAMS = [
 ].join(',')
 
 const HOURLY_PARAMS = [
-  'temperature_2m', 'weather_code', 'precipitation_probability', 'wind_speed_10m',
+  'temperature_2m', 'apparent_temperature', 'weather_code', 'precipitation_probability', 'wind_speed_10m',
   'relative_humidity_2m', 'surface_pressure',
 ].join(',')
 
@@ -50,6 +50,7 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
       windSpeed: data.hourly.wind_speed_10m[i],
       humidity: data.hourly.relative_humidity_2m[i] ?? 0,
       pressure: data.hourly.surface_pressure?.[i] ?? null,
+      apparentTemperature: data.hourly.apparent_temperature?.[i] ?? data.hourly.temperature_2m[i] ?? 0,
     })
   })
 

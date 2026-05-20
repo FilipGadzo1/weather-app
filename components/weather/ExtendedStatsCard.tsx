@@ -1,6 +1,7 @@
 import type { CurrentWeather, DailyForecast, TemperatureUnit } from '@/types/weather'
 import { toDisplayTemp } from '@/lib/store/weather-store'
 import { getPressureTrend } from '@/lib/weather/pressure-trend'
+import { DewPointBadge } from './DewPointBadge'
 
 interface ExtendedStatsCardProps {
   weather: CurrentWeather
@@ -8,17 +9,17 @@ interface ExtendedStatsCardProps {
   daily?: DailyForecast[]
 }
 
-function StatBlock({ emoji, label, value, suffix }: {
-  emoji: string; label: string; value: string; suffix?: React.ReactNode
+function StatBlock({ emoji, label, value, suffix, children }: {
+  emoji: string; label: string; value: string; suffix?: React.ReactNode; children?: React.ReactNode
 }) {
   return (
     <div className="flex flex-col items-center gap-1 p-3 glass-card-dark rounded-xl">
       <span className="text-xl" aria-hidden="true">{emoji}</span>
       <span className="text-xs text-white/60 uppercase tracking-wider text-center">{label}</span>
       <span className="text-sm font-semibold text-white">
-        {value}
-        {suffix}
+        {value}{suffix}
       </span>
+      {children}
     </div>
   )
 }
@@ -50,7 +51,9 @@ export function ExtendedStatsCard({ weather, unit, daily }: ExtendedStatsCardPro
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <StatBlock emoji="🌡️" label="Pressure" value={pressureValue} suffix={trendSuffix} />
         <StatBlock emoji="☁️" label="Cloud Cover" value={cloudValue} />
-        <StatBlock emoji="💧" label="Dew Point" value={dewValue} />
+        <StatBlock emoji="💧" label="Dew Point" value={dewValue}>
+          <DewPointBadge dewPointC={dewPoint} />
+        </StatBlock>
         <StatBlock emoji="👁️" label="Visibility" value={visibilityValue} />
       </div>
     </div>

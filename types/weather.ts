@@ -41,6 +41,7 @@ export interface HourlyForecast {
   windSpeed: number
   humidity: number             // % relative humidity
   pressure: number | null      // hPa
+  apparentTemperature: number
 }
 
 export interface WeatherData {
