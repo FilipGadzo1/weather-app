@@ -8,11 +8,14 @@ interface WeatherStore {
   currentCity: GeoLocation | null
   savedLocations: GeoLocation[]
   temperatureUnit: TemperatureUnit
+  recentSearches: GeoLocation[]
   setCurrentCity: (city: GeoLocation) => void
   addSavedLocation: (city: GeoLocation) => void
   removeSavedLocation: (name: string) => void
   toggleTemperatureUnit: () => void
   isSaved: (name: string) => boolean
+  addRecentSearch: (city: GeoLocation) => void
+  clearRecentSearches: () => void
 }
 
 export const useWeatherStore = create<WeatherStore>()(
@@ -21,6 +24,7 @@ export const useWeatherStore = create<WeatherStore>()(
       currentCity: null,
       savedLocations: [],
       temperatureUnit: 'C',
+      recentSearches: [],
       setCurrentCity: (city) => set({ currentCity: city }),
       addSavedLocation: (city) => {
         const existing = get().savedLocations
@@ -33,6 +37,13 @@ export const useWeatherStore = create<WeatherStore>()(
       toggleTemperatureUnit: () =>
         set({ temperatureUnit: get().temperatureUnit === 'C' ? 'F' : 'C' }),
       isSaved: (name) => get().savedLocations.some((s) => s.name === name),
+      addRecentSearch: (city) => {
+        const filtered = get().recentSearches.filter(
+          (s) => !(s.name === city.name && s.country === city.country)
+        )
+        set({ recentSearches: [city, ...filtered].slice(0, 5) })
+      },
+      clearRecentSearches: () => set({ recentSearches: [] }),
     }),
     { name: 'weather-app-storage' }
   )
