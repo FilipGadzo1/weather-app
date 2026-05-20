@@ -32,6 +32,11 @@ function DayCard({
   const dayName = date.toLocaleDateString('en-US', { weekday: 'short' })
   const monthDay = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 
+  const rangePos =
+    Number.isFinite(day.tempMin) && Number.isFinite(day.tempMax)
+      ? computeRangePosition(day.tempMin, day.tempMax, weekMin, weekMax)
+      : null
+
   return (
     <button
       onClick={onClick}
@@ -42,17 +47,14 @@ function DayCard({
       <span className="text-white/50 text-xs">{monthDay}</span>
       <WeatherIcon iconKey={info.iconKey} size={28} />
       <span className="text-white/60 text-xs">{day.precipitationProbability}% 💧</span>
-      {Number.isFinite(day.tempMin) && Number.isFinite(day.tempMax) && (() => {
-        const pos = computeRangePosition(day.tempMin, day.tempMax, weekMin, weekMax)
-        return (
-          <div className="w-full h-1.5 bg-white/10 rounded-full relative overflow-hidden my-1">
-            <div
-              className="absolute top-0 h-full rounded-full bg-gradient-to-r from-sky-400/70 via-yellow-300/70 to-orange-400/80"
-              style={{ left: `${pos.leftPct}%`, width: `${pos.widthPct}%` }}
-            />
-          </div>
-        )
-      })()}
+      {rangePos && (
+        <div className="w-full h-1.5 bg-white/10 rounded-full relative overflow-hidden my-1">
+          <div
+            className="absolute top-0 h-full rounded-full bg-gradient-to-r from-sky-400/70 via-yellow-300/70 to-orange-400/80"
+            style={{ left: `${rangePos.leftPct}%`, width: `${rangePos.widthPct}%` }}
+          />
+        </div>
+      )}
       <div className="flex gap-1 text-sm font-semibold">
         <span className="text-white">{toDisplayTemp(day.tempMax, unit)}°</span>
         <span className="text-white/40">/</span>
@@ -65,8 +67,8 @@ function DayCard({
 export function ForecastStrip({ daily, unit }: ForecastStripProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
 
-  const weekMin = Math.min(...daily.map(d => d.tempMin))
-  const weekMax = Math.max(...daily.map(d => d.tempMax))
+  const weekMin = daily.length ? Math.min(...daily.map(d => d.tempMin)) : 0
+  const weekMax = daily.length ? Math.max(...daily.map(d => d.tempMax)) : 0
 
   const toggleDay = (index: number) => {
     setSelectedDay(selectedDay === index ? null : index)
