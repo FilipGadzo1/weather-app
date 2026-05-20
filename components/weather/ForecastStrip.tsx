@@ -5,6 +5,7 @@ import type { DailyForecast, TemperatureUnit } from '@/types/weather'
 import { getWmoInfo } from '@/lib/weather/wmo-codes'
 import { toDisplayTemp } from '@/lib/store/weather-store'
 import { WeatherIcon } from './WeatherIcon'
+import { computeRangePosition } from '@/lib/weather/temp-range'
 
 interface ForecastStripProps {
   daily: DailyForecast[]
@@ -16,11 +17,15 @@ function DayCard({
   unit,
   isSelected,
   onClick,
+  weekMin,
+  weekMax,
 }: {
   day: DailyForecast
   unit: TemperatureUnit
   isSelected: boolean
   onClick: () => void
+  weekMin: number
+  weekMax: number
 }) {
   const info = getWmoInfo(day.wmoCode)
   const date = new Date(day.date + 'T12:00:00')
@@ -37,6 +42,17 @@ function DayCard({
       <span className="text-white/50 text-xs">{monthDay}</span>
       <WeatherIcon iconKey={info.iconKey} size={28} />
       <span className="text-white/60 text-xs">{day.precipitationProbability}% 💧</span>
+      {Number.isFinite(day.tempMin) && Number.isFinite(day.tempMax) && (() => {
+        const pos = computeRangePosition(day.tempMin, day.tempMax, weekMin, weekMax)
+        return (
+          <div className="w-full h-1.5 bg-white/10 rounded-full relative overflow-hidden my-1">
+            <div
+              className="absolute top-0 h-full rounded-full bg-gradient-to-r from-sky-400/70 via-yellow-300/70 to-orange-400/80"
+              style={{ left: `${pos.leftPct}%`, width: `${pos.widthPct}%` }}
+            />
+          </div>
+        )
+      })()}
       <div className="flex gap-1 text-sm font-semibold">
         <span className="text-white">{toDisplayTemp(day.tempMax, unit)}°</span>
         <span className="text-white/40">/</span>
@@ -48,6 +64,9 @@ function DayCard({
 
 export function ForecastStrip({ daily, unit }: ForecastStripProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
+
+  const weekMin = Math.min(...daily.map(d => d.tempMin))
+  const weekMax = Math.max(...daily.map(d => d.tempMax))
 
   const toggleDay = (index: number) => {
     setSelectedDay(selectedDay === index ? null : index)
@@ -67,6 +86,8 @@ export function ForecastStrip({ daily, unit }: ForecastStripProps) {
             unit={unit}
             isSelected={selectedDay === i}
             onClick={() => toggleDay(i)}
+            weekMin={weekMin}
+            weekMax={weekMax}
           />
         ))}
       </div>
