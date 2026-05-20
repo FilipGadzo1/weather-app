@@ -39,6 +39,8 @@ export interface HourlyForecast {
   wmoCode: number
   precipitationProbability: number
   windSpeed: number
+  humidity: number             // % relative humidity
+  pressure: number | null      // hPa
 }
 
 export interface WeatherData {

@@ -17,6 +17,7 @@ const DAILY_PARAMS = [
 
 const HOURLY_PARAMS = [
   'temperature_2m', 'weather_code', 'precipitation_probability', 'wind_speed_10m',
+  'relative_humidity_2m', 'surface_pressure',
 ].join(',')
 
 export function buildForecastUrl(lat: number, lon: number): string {
@@ -47,6 +48,8 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
       wmoCode: data.hourly.weather_code[i],
       precipitationProbability: data.hourly.precipitation_probability[i],
       windSpeed: data.hourly.wind_speed_10m[i],
+      humidity: data.hourly.relative_humidity_2m[i] ?? 0,
+      pressure: data.hourly.surface_pressure?.[i] ?? null,
     })
   })
 
