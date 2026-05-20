@@ -1,5 +1,6 @@
 'use client'
 
+import type { ReactNode } from 'react'
 import { useWeatherStore } from '@/lib/store/weather-store'
 import { WeatherCard } from '@/components/weather/WeatherCard'
 import { ForecastStrip } from '@/components/weather/ForecastStrip'
@@ -20,6 +21,20 @@ import { TomorrowCard } from '@/components/weather/TomorrowCard'
 import { getNext24Hours } from '@/lib/weather/hourly'
 import type { WeatherData } from '@/types/weather'
 
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex items-center gap-3 pt-2">
+      <span
+        className="text-white/35 text-xs uppercase tracking-[0.25em] font-medium"
+        style={{ fontFamily: 'var(--font-outfit)' }}
+      >
+        {children}
+      </span>
+      <div className="flex-1 h-px bg-white/10" />
+    </div>
+  )
+}
+
 export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
   const { temperatureUnit } = useWeatherStore()
   const next24 = getNext24Hours(weatherData)
@@ -34,10 +49,11 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
         timezone={weatherData.timezone}
       />
 
-      {/* 24-hour temperature chart – full width */}
+      {/* ── Today ──────────────────────────────────── */}
+      <SectionLabel>Today</SectionLabel>
+
       <HourlyChart hours={next24} unit={temperatureUnit} />
 
-      {/* Hourly detail – 2-col on md+ */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <HourlyWindStrip hours={next24} />
         <HourlyConditionStrip hours={next24} timezone={weatherData.timezone} />
@@ -48,26 +64,27 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
       </div>
       <HourlyPrecipChart hours={next24} />
 
-      {/* Summary + best time – 2-col on md+ */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <WeatherSummaryCard weather={weatherData.current} daily={weatherData.daily} unit={temperatureUnit} />
         <BestTimeCard hours={next24} />
       </div>
 
-      {/* Atmosphere – full width */}
+      {/* ── Atmosphere ─────────────────────────────── */}
+      <SectionLabel>Atmosphere</SectionLabel>
+
       <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} daily={weatherData.daily} />
 
-      {/* Week overview – full width */}
+      {/* ── This Week ──────────────────────────────── */}
+      <SectionLabel>This Week</SectionLabel>
+
       <WeekSparkline daily={weatherData.daily} unit={temperatureUnit} />
       <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
 
-      {/* Sun + precipitation – 2-col on md+ */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
         <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
       </div>
 
-      {/* Moon + tomorrow – 2-col on md+ */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MoonPhaseCard />
         <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />

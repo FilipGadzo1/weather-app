@@ -40,7 +40,7 @@ export function HourlyUvChart({ hours }: HourlyUvChartProps) {
             <div key={h.time} className="flex flex-col items-center flex-1">
               <div className="h-12 bg-white/10 rounded-sm relative flex items-end overflow-hidden w-full">
                 <div
-                  className="w-full rounded-sm"
+                  className="w-full rounded-t-sm"
                   style={{ height: `${heightPct}%`, backgroundColor: uvColor(h.uvIndex) }}
                 />
               </div>

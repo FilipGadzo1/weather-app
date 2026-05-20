@@ -28,7 +28,7 @@ export function HourlyHumidityChart({ hours }: HourlyHumidityChartProps) {
             <div key={h.time} className="flex flex-col items-center flex-1">
               <div className="h-12 w-full bg-white/10 rounded-sm flex items-end overflow-hidden">
                 <div
-                  className="w-full rounded-sm"
+                  className="w-full rounded-t-sm"
                   style={{ height: `${pct}%`, backgroundColor: humidityColor(pct) }}
                 />
               </div>

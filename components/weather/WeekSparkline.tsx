@@ -35,6 +35,23 @@ export function WeekSparkline({ daily, unit }: WeekSparklineProps) {
         7-Day Temperature Trend
       </h2>
       <svg viewBox="0 0 300 80" className="w-full mt-3" aria-hidden="true">
+        <defs>
+          <linearGradient id="bandFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(251,146,60,0.12)" />
+            <stop offset="100%" stopColor="rgba(56,189,248,0.12)" />
+          </linearGradient>
+        </defs>
+
+        {/* Filled band between high and low */}
+        <path
+          d={[
+            ...daily.map((d, i) => `${i === 0 ? 'M' : 'L'} ${x(i)},${y(toDisplayTemp(d.tempMax, unit))}`),
+            ...[...daily].reverse().map((d, i) => `L ${x(daily.length - 1 - i)},${y(toDisplayTemp(d.tempMin, unit))}`),
+            'Z',
+          ].join(' ')}
+          fill="url(#bandFill)"
+        />
+
         {/* High polyline */}
         <polyline
           points={highPoints}

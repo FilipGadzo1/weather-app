@@ -75,6 +75,24 @@ export function HourlyChart({ hours, unit }: HourlyChartProps) {
         role="img"
         aria-label="24-hour temperature, feels-like, and precipitation chart"
       >
+        <defs>
+          <linearGradient id="tempAreaFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.12)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+        </defs>
+
+        {/* Area fill under temperature line */}
+        <path
+          d={[
+            `M ${xAt(0).toFixed(1)},${(PAD_TOP + LINE_AREA_H).toFixed(1)}`,
+            ...temps.map((t, i) => `L ${xAt(i).toFixed(1)},${yAtTemp(t).toFixed(1)}`),
+            `L ${xAt(hours.length - 1).toFixed(1)},${(PAD_TOP + LINE_AREA_H).toFixed(1)}`,
+            'Z',
+          ].join(' ')}
+          fill="url(#tempAreaFill)"
+        />
+
         {hours.map((h, i) => {
           if (h.precipitationProbability <= 0) return null
           const barH = (h.precipitationProbability / 100) * barMaxH
