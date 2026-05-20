@@ -3,7 +3,11 @@ import { BestTimeCard } from '../BestTimeCard'
 import type { HourlyForecast } from '@/types/weather'
 
 function makeHour(temperature: number, precipitationProbability: number, windSpeed: number): HourlyForecast {
-  return { time: '2026-05-20T12:00', temperature, wmoCode: 0, precipitationProbability, windSpeed }
+  return {
+    time: '2026-05-20T12:00', temperature, wmoCode: 0, precipitationProbability, windSpeed,
+    humidity: 50, pressure: 1013, apparentTemperature: temperature, uvIndex: 0,
+    precipitationAmount: 0, windDirection: 0,
+  }
 }
 
 const TERRIBLE = makeHour(-10, 90, 60)

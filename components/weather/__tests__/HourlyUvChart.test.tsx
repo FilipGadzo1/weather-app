@@ -14,6 +14,8 @@ function makeHour(i: number, uvIndex: number): HourlyForecast {
     pressure: 1013,
     apparentTemperature: 20,
     uvIndex,
+    precipitationAmount: 0,
+    windDirection: 0,
   }
 }
 

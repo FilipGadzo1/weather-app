@@ -9,6 +9,12 @@ function makeHours(n: number, windSpeed = 10): HourlyForecast[] {
     wmoCode: 0,
     precipitationProbability: 0,
     windSpeed,
+    humidity: 50,
+    pressure: 1013,
+    apparentTemperature: 18,
+    uvIndex: 0,
+    precipitationAmount: 0,
+    windDirection: 0,
   }))
 }
 

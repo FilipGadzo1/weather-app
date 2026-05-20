@@ -44,6 +44,8 @@ export interface HourlyForecast {
   pressure: number | null      // hPa
   apparentTemperature: number
   uvIndex: number              // UV index 0–11+
+  precipitationAmount: number  // mm/h actual precipitation
+  windDirection: number        // degrees 0–360, 0 = North
 }
 
 export interface WeatherData {

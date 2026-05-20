@@ -11,6 +11,10 @@ function makeHours(n: number, humidity = 65): HourlyForecast[] {
     windSpeed: 10,
     humidity,
     pressure: 1013,
+    apparentTemperature: 18,
+    uvIndex: 0,
+    precipitationAmount: 0,
+    windDirection: 0,
   }))
 }
 

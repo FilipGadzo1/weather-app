@@ -3,7 +3,7 @@ import type { HourlyForecast, DailyForecast } from '@/types/weather'
 
 function makeHour(msPast: number, pressure: number | null): HourlyForecast {
   const time = new Date(Date.now() - msPast).toISOString().slice(0, 16)
-  return { time, temperature: 18, wmoCode: 0, precipitationProbability: 0, windSpeed: 5, humidity: 60, pressure }
+  return { time, temperature: 18, wmoCode: 0, precipitationProbability: 0, windSpeed: 5, humidity: 60, pressure, apparentTemperature: 18, uvIndex: 0, precipitationAmount: 0, windDirection: 0 }
 }
 
 function makeDaily(hourly: HourlyForecast[]): DailyForecast[] {

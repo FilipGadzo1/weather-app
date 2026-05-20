@@ -6,6 +6,7 @@ import { getWmoInfo } from '@/lib/weather/wmo-codes'
 import { toDisplayTemp } from '@/lib/store/weather-store'
 import { WeatherIcon } from './WeatherIcon'
 import { computeRangePosition } from '@/lib/weather/temp-range'
+import { WindDirectionBadge } from './WindDirectionBadge'
 
 interface ForecastStripProps {
   daily: DailyForecast[]
@@ -113,6 +114,7 @@ export function ForecastStrip({ daily, unit }: ForecastStripProps) {
                   <span className="text-white text-sm font-medium">{toDisplayTemp(hour.temperature, unit)}°</span>
                   <span className="text-white/40 text-xs">{hour.precipitationProbability}% 🌧</span>
                   <span className="text-white/40 text-xs">{Number.isFinite(hour.windSpeed) ? Math.round(hour.windSpeed) : 0} km/h</span>
+                  <WindDirectionBadge degrees={hour.windDirection} />
                   <span className="text-white/40 text-xs">{Number.isFinite(hour.humidity) ? hour.humidity : 0}% 💧</span>
                 </div>
               )

@@ -6,6 +6,8 @@ import { formatTimeInZone } from '@/lib/utils/format-time'
 import { WeatherIcon } from './WeatherIcon'
 import { WindCompass } from './WindCompass'
 import { FeelScoreBadge } from './FeelScoreBadge'
+import { getComfortBanner } from '@/lib/weather/comfort-banner'
+import { degreesToCompass } from '@/lib/weather/wind-direction'
 
 interface WeatherCardProps {
   location: GeoLocation
@@ -30,8 +32,7 @@ export function WeatherCard({ location, weather, unit, sunTimes, timezone }: Wea
   const temp = toDisplayTemp(weather.temperature, unit)
   const feelsLike = toDisplayTemp(weather.feelsLike, unit)
 
-  const windDirs = ['N','NE','E','SE','S','SW','W','NW']
-  const windDir = windDirs[((Math.round(weather.windDirection / 45) % 8) + 8) % 8]
+  const windDir = degreesToCompass(weather.windDirection)
 
   return (
     <div className="glass-card p-6 md:p-8">
@@ -63,6 +64,15 @@ export function WeatherCard({ location, weather, unit, sunTimes, timezone }: Wea
         humidity={weather.humidity}
         windSpeed={weather.windSpeed}
       />
+      {(() => {
+        const banner = getComfortBanner(weather)
+        return banner ? (
+          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm ${banner.bgClass} mt-2`}>
+            <span>{banner.icon}</span>
+            <span className={banner.colorClass}>{banner.message}</span>
+          </div>
+        ) : null
+      })()}
 
       <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 mt-6">
         <StatPill label="Humidity" value={`${weather.humidity}%`} />

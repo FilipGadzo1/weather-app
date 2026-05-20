@@ -2,7 +2,11 @@ import { getNext24Hours } from '../hourly'
 import type { WeatherData, HourlyForecast } from '@/types/weather'
 
 function makeHour(iso: string, temp = 15): HourlyForecast {
-  return { time: iso, temperature: temp, wmoCode: 2, precipitationProbability: 0, windSpeed: 10 }
+  return {
+    time: iso, temperature: temp, wmoCode: 2, precipitationProbability: 0, windSpeed: 10,
+    humidity: 50, pressure: 1013, apparentTemperature: temp, uvIndex: 0,
+    precipitationAmount: 0, windDirection: 0,
+  }
 }
 
 function makeData(hours: HourlyForecast[]): WeatherData {
