@@ -8,6 +8,7 @@ import { useWeatherStore } from '@/lib/store/weather-store'
 export function SearchBar({ placeholder = 'Search city...' }: { placeholder?: string }) {
   const router = useRouter()
   const setCurrentCity = useWeatherStore((s) => s.setCurrentCity)
+  const addRecentSearch = useWeatherStore((s) => s.addRecentSearch)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<GeoLocation[]>([])
   const [loading, setLoading] = useState(false)
@@ -35,11 +36,12 @@ export function SearchBar({ placeholder = 'Search city...' }: { placeholder?: st
 
   const selectCity = useCallback((city: GeoLocation) => {
     setCurrentCity(city)
+    addRecentSearch(city)
     setQuery(city.name)
     setOpen(false)
     const slug = encodeURIComponent(city.name.toLowerCase().replace(/\s+/g, '-'))
     router.push(`/city/${slug}?lat=${city.lat}&lon=${city.lon}&name=${encodeURIComponent(city.name)}&country=${encodeURIComponent(city.country)}${city.admin1 ? `&admin1=${encodeURIComponent(city.admin1)}` : ''}`)
-  }, [router, setCurrentCity])
+  }, [router, setCurrentCity, addRecentSearch])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
