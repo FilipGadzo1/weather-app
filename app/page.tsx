@@ -1,4 +1,5 @@
 import { SearchBar } from '@/components/search/SearchBar'
+import { RecentSearches } from '@/components/search/RecentSearches'
 import UseMyLocationButton from '@/components/locations/UseMyLocationButton'
 import { SavedLocations } from '@/components/locations/SavedLocations'
 import { WeatherBackground } from '@/components/weather/WeatherBackground'
@@ -18,6 +19,8 @@ export default function HomePage() {
           </div>
 
           <SearchBar placeholder="Search for any city..." />
+
+          <RecentSearches />
 
           <UseMyLocationButton />
 
