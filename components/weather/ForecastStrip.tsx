@@ -41,12 +41,13 @@ function DayCard({
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-2 p-4 rounded-xl transition-all min-w-[90px]
+      className={`flex flex-col items-center gap-2.5 px-4 py-5 rounded-xl transition-all min-w-[96px]
         ${isSelected ? 'bg-white/20 border border-white/40' : 'glass-card-dark hover:bg-white/15'}`}
+      style={{ fontFamily: 'var(--font-outfit)' }}
     >
-      <span className="text-white/70 text-xs font-medium">{dayName}</span>
-      <span className="text-white/50 text-xs">{monthDay}</span>
-      <WeatherIcon iconKey={info.iconKey} size={28} />
+      <span className="text-white/80 text-xs font-semibold tracking-wide">{dayName}</span>
+      <span className="text-white/45 text-[11px]">{monthDay}</span>
+      <WeatherIcon iconKey={info.iconKey} size={32} />
       <span className="text-white/60 text-xs">{day.precipitationProbability}% 💧</span>
       {day.precipitationSum !== null && day.precipitationSum > 0 && (
         <span className="text-sky-300/70 text-xs">{day.precipitationSum.toFixed(1)}mm</span>
@@ -59,10 +60,10 @@ function DayCard({
           />
         </div>
       )}
-      <div className="flex gap-1 text-sm font-semibold">
+      <div className="flex gap-1 text-sm font-semibold" style={{ fontFamily: 'var(--font-outfit)' }}>
         <span className="text-white">{toDisplayTemp(day.tempMax, unit)}°</span>
-        <span className="text-white/40">/</span>
-        <span className="text-white/60">{toDisplayTemp(day.tempMin, unit)}°</span>
+        <span className="text-white/30">/</span>
+        <span className="text-white/50">{toDisplayTemp(day.tempMin, unit)}°</span>
       </div>
     </button>
   )
@@ -80,7 +81,10 @@ export function ForecastStrip({ daily, unit }: ForecastStripProps) {
 
   return (
     <div className="glass-card p-4 md:p-6">
-      <h2 className="text-white/80 text-sm font-medium uppercase tracking-wider mb-4">
+      <h2
+        className="text-white/60 text-xs font-medium uppercase tracking-[0.2em] mb-4"
+        style={{ fontFamily: 'var(--font-outfit)' }}
+      >
         7-Day Forecast
       </h2>
 

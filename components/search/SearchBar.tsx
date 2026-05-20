@@ -67,7 +67,8 @@ export function SearchBar({ placeholder = 'Search city...' }: { placeholder?: st
           onChange={(e) => { setQuery(e.target.value); search(e.target.value) }}
           onFocus={() => results.length > 0 && setOpen(true)}
           placeholder={placeholder}
-          className="w-full pl-12 pr-4 py-4 glass-card text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-white/30 text-lg transition-all"
+          className="w-full pl-12 pr-4 py-4 glass-card text-white placeholder-white/35 outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/[0.14] text-base transition-all"
+          style={{ fontFamily: 'var(--font-outfit)' }}
         />
         {loading && (
           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 text-sm animate-spin">⏳</span>
