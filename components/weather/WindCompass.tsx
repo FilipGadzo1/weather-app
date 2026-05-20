@@ -33,12 +33,7 @@ export function WindCompass({ degrees, size = 24 }: WindCompassProps) {
         >
           N
         </text>
-        <g
-          style={{
-            transform: `rotate(${degrees}deg)`,
-            transformOrigin: '12px 12px',
-          }}
-        >
+        <g transform={`rotate(${degrees}, 12, 12)`}>
           <path d="M12 4 L14 12 L12 10 L10 12 Z" fill="white" />
         </g>
       </svg>

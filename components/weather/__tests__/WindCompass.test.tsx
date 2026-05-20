@@ -6,7 +6,7 @@ describe('WindCompass', () => {
     const { container } = render(<WindCompass degrees={90} />)
     const g = container.querySelector('g')
     expect(g).not.toBeNull()
-    expect(g?.getAttribute('style')).toContain('rotate(90deg)')
+    expect(g?.getAttribute('transform')).toContain('rotate(90')
   })
 
   it('returns null for non-finite degrees', () => {

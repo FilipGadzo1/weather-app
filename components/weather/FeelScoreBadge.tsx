@@ -7,7 +7,7 @@ interface FeelScoreBadgeProps {
 }
 
 export function FeelScoreBadge({ feelsLikeC, humidity, windSpeed }: FeelScoreBadgeProps) {
-  if (!Number.isFinite(feelsLikeC)) return null
+  if (!Number.isFinite(feelsLikeC) || !Number.isFinite(humidity) || !Number.isFinite(windSpeed)) return null
 
   const score = computeFeelScore({ feelsLikeC, humidity, windSpeed })
 
