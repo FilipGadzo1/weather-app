@@ -17,24 +17,28 @@ function StatBlock({ emoji, label, value }: { emoji: string; label: string; valu
 }
 
 export function ExtendedStatsCard({ weather, unit }: ExtendedStatsCardProps) {
-  const { pressure, cloudCover, dewPoint } = weather
-  if (pressure === null && cloudCover === null && dewPoint === null) {
+  const { pressure, cloudCover, dewPoint, visibility } = weather
+  if (pressure === null && cloudCover === null && dewPoint === null && !Number.isFinite(visibility)) {
     return null
   }
 
   const pressureValue = pressure !== null ? `${Math.round(pressure)} hPa` : '—'
-  const cloudValue = cloudCover !== null ? `${cloudCover}%` : '—'
+  const cloudValue = cloudCover !== null ? `${Math.round(cloudCover)}%` : '—'
   const dewValue = dewPoint !== null ? `${toDisplayTemp(dewPoint, unit)}°${unit}` : '—'
+  const visibilityValue = Number.isFinite(visibility) && visibility >= 0
+    ? (visibility > 999 ? '999+ km' : `${Math.round(visibility)} km`)
+    : '—'
 
   return (
     <div className="glass-card p-6">
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-4">
         Atmosphere
       </h2>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <StatBlock emoji="🌡️" label="Pressure" value={pressureValue} />
         <StatBlock emoji="☁️" label="Cloud Cover" value={cloudValue} />
         <StatBlock emoji="💧" label="Dew Point" value={dewValue} />
+        <StatBlock emoji="👁️" label="Visibility" value={visibilityValue} />
       </div>
     </div>
   )

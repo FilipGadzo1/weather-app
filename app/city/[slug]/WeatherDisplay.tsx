@@ -6,6 +6,8 @@ import { ForecastStrip } from '@/components/weather/ForecastStrip'
 import { HourlyChart } from '@/components/weather/HourlyChart'
 import { ExtendedStatsCard } from '@/components/weather/ExtendedStatsCard'
 import { PrecipitationBarChart } from '@/components/weather/PrecipitationBarChart'
+import { WeekSparkline } from '@/components/weather/WeekSparkline'
+import { SunriseSunsetCard } from '@/components/weather/SunriseSunsetCard'
 import { getNext24Hours } from '@/lib/weather/hourly'
 import type { WeatherData } from '@/types/weather'
 
@@ -23,8 +25,10 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
       />
       <HourlyChart hours={next24} unit={temperatureUnit} />
       <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} />
+      <WeekSparkline daily={weatherData.daily} unit={temperatureUnit} />
       <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
       <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
+      <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
     </>
   )
 }
