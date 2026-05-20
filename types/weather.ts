@@ -28,6 +28,7 @@ export interface DailyForecast {
   tempMin: number
   wmoCode: number
   precipitationProbability: number
+  precipitationSum: number | null  // mm of precipitation
   sunrise: string
   sunset: string
   hourly: HourlyForecast[]
@@ -42,6 +43,7 @@ export interface HourlyForecast {
   humidity: number             // % relative humidity
   pressure: number | null      // hPa
   apparentTemperature: number
+  uvIndex: number              // UV index 0–11+
 }
 
 export interface WeatherData {

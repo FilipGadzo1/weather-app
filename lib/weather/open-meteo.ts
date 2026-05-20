@@ -12,12 +12,12 @@ const CURRENT_PARAMS = [
 
 const DAILY_PARAMS = [
   'temperature_2m_max', 'temperature_2m_min', 'weather_code',
-  'precipitation_probability_max', 'sunrise', 'sunset',
+  'precipitation_probability_max', 'sunrise', 'sunset', 'precipitation_sum',
 ].join(',')
 
 const HOURLY_PARAMS = [
   'temperature_2m', 'apparent_temperature', 'weather_code', 'precipitation_probability', 'wind_speed_10m',
-  'relative_humidity_2m', 'surface_pressure',
+  'relative_humidity_2m', 'surface_pressure', 'uv_index',
 ].join(',')
 
 export function buildForecastUrl(lat: number, lon: number): string {
@@ -51,6 +51,7 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
       humidity: data.hourly.relative_humidity_2m[i] ?? 0,
       pressure: data.hourly.surface_pressure?.[i] ?? null,
       apparentTemperature: data.hourly.apparent_temperature?.[i] ?? data.hourly.temperature_2m[i] ?? 0,
+      uvIndex: data.hourly.uv_index?.[i] ?? 0,
     })
   })
 
@@ -60,6 +61,7 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
     tempMin: data.daily.temperature_2m_min[i],
     wmoCode: data.daily.weather_code[i],
     precipitationProbability: data.daily.precipitation_probability_max[i],
+    precipitationSum: data.daily.precipitation_sum?.[i] ?? null,
     sunrise: data.daily.sunrise[i],
     sunset: data.daily.sunset[i],
     hourly: hourlyByDay[date] ?? [],
@@ -73,7 +75,7 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
       humidity: c.relative_humidity_2m,
       windSpeed: c.wind_speed_10m,
       windDirection: c.wind_direction_10m,
-      uvIndex: c.uv_index,
+      uvIndex: c.uv_index ?? 0,
       visibility: Math.round(c.visibility / 1000),
       wmoCode: c.weather_code,
       isDay: c.is_day === 1,

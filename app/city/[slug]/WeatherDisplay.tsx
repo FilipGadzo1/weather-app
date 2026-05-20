@@ -11,6 +11,8 @@ import { SunriseSunsetCard } from '@/components/weather/SunriseSunsetCard'
 import { HourlyWindStrip } from '@/components/weather/HourlyWindStrip'
 import { HourlyConditionStrip } from '@/components/weather/HourlyConditionStrip'
 import { HourlyHumidityChart } from '@/components/weather/HourlyHumidityChart'
+import { MoonPhaseCard } from '@/components/weather/MoonPhaseCard'
+import { HourlyUvChart } from '@/components/weather/HourlyUvChart'
 import { WeatherSummaryCard } from '@/components/weather/WeatherSummaryCard'
 import { BestTimeCard } from '@/components/weather/BestTimeCard'
 import { TomorrowCard } from '@/components/weather/TomorrowCard'
@@ -33,6 +35,7 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
       <HourlyWindStrip hours={next24} />
       <HourlyConditionStrip hours={next24} timezone={weatherData.timezone} />
       <HourlyHumidityChart hours={next24} />
+      <HourlyUvChart hours={next24} />
       <WeatherSummaryCard weather={weatherData.current} daily={weatherData.daily} unit={temperatureUnit} />
       <BestTimeCard hours={next24} />
       <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} daily={weatherData.daily} />
@@ -40,6 +43,7 @@ export function WeatherDisplay({ weatherData }: { weatherData: WeatherData }) {
       <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
       <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
       <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
+      <MoonPhaseCard />
       <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
     </>
   )

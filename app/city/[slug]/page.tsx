@@ -47,7 +47,7 @@ export default async function CityPage({ searchParams }: PageProps) {
   if (weatherResult.status === 'rejected') {
     return (
       <WeatherBackground backgroundKey="cloudy">
-        <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="min-h-screen flex items-center justify-center px-4 max-w-5xl mx-auto">
           <div className="glass-card p-8 text-center max-w-md">
             <p className="text-4xl mb-4">⚠️</p>
             <h2 className="text-white text-xl font-semibold mb-2">Weather data unavailable</h2>
@@ -67,10 +67,19 @@ export default async function CityPage({ searchParams }: PageProps) {
 
   return (
     <WeatherBackground backgroundKey={bgKey}>
-      <div className="min-h-screen px-4 py-6 max-w-3xl mx-auto">
+      <div className="min-h-screen px-4 py-6 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <Link href="/" className="text-white/60 hover:text-white text-sm transition-colors">
-            ← Search
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 text-white/50 hover:text-white text-sm transition-colors group"
+          >
+            <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+            <span
+              className="font-semibold text-white/70 group-hover:text-white transition-colors"
+              style={{ fontFamily: 'var(--font-playfair)', fontStyle: 'italic' }}
+            >
+              Skye
+            </span>
           </Link>
           <CityPageClient location={location} />
         </div>

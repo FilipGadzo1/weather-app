@@ -1,19 +1,30 @@
 'use client'
 
-
 interface WeatherBackgroundProps {
   backgroundKey: string
   children: React.ReactNode
 }
 
-const BG_STYLES: Record<string, { from: string; to: string; via?: string }> = {
-  'clear-day':   { from: '#0ea5e9', via: '#38bdf8', to: '#7dd3fc' },
-  'clear-night': { from: '#0f172a', via: '#1e1b4b', to: '#312e81' },
-  cloudy:        { from: '#334155', via: '#475569', to: '#64748b' },
-  fog:           { from: '#374151', via: '#4b5563', to: '#6b7280' },
-  rain:          { from: '#164e63', via: '#0e7490', to: '#155e75' },
-  snow:          { from: '#bfdbfe', via: '#e0f2fe', to: '#f0f9ff' },
-  storm:         { from: '#1c1917', via: '#292524', to: '#44403c' },
+const BG_IMAGES: Record<string, string> = {
+  'clear-day':   '/backgrounds/bg-sunny.png',
+  'clear-night': '/backgrounds/bg-night.png',
+  cloudy:        '/backgrounds/bg-cloudy.png',
+  fog:           '/backgrounds/bg-cloudy.png',
+  rain:          '/backgrounds/bg-rain.png',
+  snow:          '/backgrounds/bg-snow.png',
+  storm:         '/backgrounds/bg-rain.png',
+  aurora:        '/backgrounds/bg-aurora.png',
+}
+
+const BG_OVERLAYS: Record<string, string> = {
+  'clear-day':   'rgba(14,74,110,0.35)',
+  'clear-night': 'rgba(5,8,30,0.55)',
+  cloudy:        'rgba(30,41,59,0.50)',
+  fog:           'rgba(55,65,81,0.55)',
+  rain:          'rgba(7,42,60,0.55)',
+  snow:          'rgba(186,230,253,0.25)',
+  storm:         'rgba(10,10,15,0.65)',
+  aurora:        'rgba(5,10,30,0.45)',
 }
 
 function RainParticles() {
@@ -75,15 +86,27 @@ function SunGlow() {
 }
 
 export function WeatherBackground({ backgroundKey, children }: WeatherBackgroundProps) {
-  const style = BG_STYLES[backgroundKey] ?? BG_STYLES['clear-day']
-
-  const gradient = style.via
-    ? `linear-gradient(135deg, ${style.from}, ${style.via}, ${style.to})`
-    : `linear-gradient(135deg, ${style.from}, ${style.to})`
+  const image = BG_IMAGES[backgroundKey] ?? BG_IMAGES['clear-night']
+  const overlay = BG_OVERLAYS[backgroundKey] ?? BG_OVERLAYS['clear-night']
 
   return (
-    <div className="relative min-h-screen" style={{ background: gradient }}>
+    <div
+      className="relative min-h-screen"
+      style={{
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      {/* Color overlay for readability */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ backgroundColor: overlay }}
+      />
+      {/* Atmospheric particles */}
       {backgroundKey === 'rain' && <RainParticles />}
+      {backgroundKey === 'storm' && <RainParticles />}
       {backgroundKey === 'snow' && <SnowParticles />}
       {backgroundKey === 'clear-day' && <SunGlow />}
       <div className="relative z-10">{children}</div>

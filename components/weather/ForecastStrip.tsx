@@ -47,6 +47,9 @@ function DayCard({
       <span className="text-white/50 text-xs">{monthDay}</span>
       <WeatherIcon iconKey={info.iconKey} size={28} />
       <span className="text-white/60 text-xs">{day.precipitationProbability}% 💧</span>
+      {day.precipitationSum !== null && day.precipitationSum > 0 && (
+        <span className="text-sky-300/70 text-xs">{day.precipitationSum.toFixed(1)}mm</span>
+      )}
       {rangePos && (
         <div className="w-full h-1.5 bg-white/10 rounded-full relative overflow-hidden my-1">
           <div
