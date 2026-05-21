@@ -84,7 +84,7 @@ export default async function CityPage({ searchParams }: PageProps) {
       {/* Dark overlay for readability */}
       <div className="fixed inset-0 -z-10" style={{ background: 'rgba(4,8,20,0.15)' }} />
 
-      <div className="relative z-10 px-4 py-6 max-w-3xl mx-auto md:px-8">
+      <div className="relative z-10 px-4 py-6 md:px-[8%]">
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
