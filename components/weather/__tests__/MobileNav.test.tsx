@@ -18,9 +18,9 @@ describe('MobileNav', () => {
     expect(onChange).toHaveBeenCalledWith('week')
   })
 
-  it('active button has aria-current="true"', () => {
+  it('active button has aria-current="page", inactive buttons omit aria-current', () => {
     render(<MobileNav active="insights" onChange={jest.fn()} />)
-    expect(screen.getByRole('button', { name: /insights/i })).toHaveAttribute('aria-current', 'true')
-    expect(screen.getByRole('button', { name: /today/i })).toHaveAttribute('aria-current', 'false')
+    expect(screen.getByRole('button', { name: /insights/i })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('button', { name: /today/i })).not.toHaveAttribute('aria-current')
   })
 })

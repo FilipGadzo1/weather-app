@@ -1,9 +1,10 @@
 'use client'
 
 import { Sun, Calendar, Cloud, Sparkles } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import type { TabKey } from './TabBar'
 
-const NAV_ITEMS: { key: TabKey; label: string; Icon: React.ElementType }[] = [
+const NAV_ITEMS: { key: TabKey; label: string; Icon: LucideIcon }[] = [
   { key: 'today',      label: 'Today',    Icon: Sun      },
   { key: 'week',       label: 'Week',     Icon: Calendar },
   { key: 'atmosphere', label: 'Atmos',    Icon: Cloud    },
@@ -32,7 +33,7 @@ export function MobileNav({ active, onChange }: MobileNavProps) {
           <button
             key={key}
             type="button"
-            aria-current={String(isActive) as 'true' | 'false'}
+            aria-current={isActive ? 'page' : undefined}
             aria-label={label}
             onClick={() => onChange(key)}
             className={`flex flex-col items-center gap-1 px-4 py-2 rounded-full transition-all duration-150 ${
