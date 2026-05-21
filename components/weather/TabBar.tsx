@@ -22,6 +22,7 @@ export function TabBar({ active, onChange }: TabBarProps) {
       {TABS.map(({ key, label }) => (
         <button
           key={key}
+          type="button"
           role="tab"
           aria-selected={active === key}
           onClick={() => onChange(key)}

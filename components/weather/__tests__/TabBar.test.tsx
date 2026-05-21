@@ -3,8 +3,6 @@ import { TabBar } from '../TabBar'
 import type { TabKey } from '../TabBar'
 
 describe('TabBar', () => {
-  const tabs: TabKey[] = ['today', 'week', 'atmosphere', 'insights']
-
   it('renders all four tab labels', () => {
     const onChange = jest.fn()
     render(<TabBar active="today" onChange={onChange} />)
