@@ -3,13 +3,9 @@ import { notFound } from 'next/navigation'
 import { fetchWeather } from '@/lib/weather/open-meteo'
 import { fetchAirQuality } from '@/lib/weather/air-quality'
 import { getBackgroundKey } from '@/lib/weather/wmo-codes'
-import { ActivityAdvisor } from '@/components/claude/ActivityAdvisor'
-import { AlertExplainer } from '@/components/claude/AlertExplainer'
-import { WhatToWear } from '@/components/claude/WhatToWear'
 import { CityPageClient } from './CityPageClient'
 import { WeatherDisplay } from './WeatherDisplay'
-import AirQualityCard from '@/components/weather/AirQualityCard'
-import { UvIndexCard } from '@/components/weather/UvIndexCard'
+import { CityInsights } from './CityInsights'
 import type { GeoLocation, AirQualityData } from '@/types/weather'
 
 interface PageProps {
@@ -62,9 +58,33 @@ export default async function CityPage({ searchParams }: PageProps) {
 
   const bgKey = getBackgroundKey(weatherData.current.wmoCode, weatherData.current.isDay)
 
+  const BG_IMAGES: Record<string, string> = {
+    'clear-day':   '/backgrounds/bg-sunny.png',
+    'clear-night': '/backgrounds/bg-night.png',
+    cloudy:        '/backgrounds/bg-cloudy.png',
+    fog:           '/backgrounds/bg-cloudy.png',
+    rain:          '/backgrounds/bg-rain.png',
+    snow:          '/backgrounds/bg-snow.png',
+    storm:         '/backgrounds/bg-rain.png',
+    aurora:        '/backgrounds/bg-aurora.png',
+  }
+  const bgImage = BG_IMAGES[bgKey] ?? BG_IMAGES['clear-night']
+
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(160deg, #080d1a 0%, #0d1525 100%)' }}>
-      <div className="px-4 py-6 max-w-5xl mx-auto">
+    <div className="relative min-h-screen">
+      {/* Full-screen background image — crisp */}
+      <div
+        className="fixed inset-0 -z-20"
+        style={{
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      {/* Dark overlay for readability */}
+      <div className="fixed inset-0 -z-10" style={{ background: 'rgba(4,8,20,0.15)' }} />
+
+      <div className="relative z-10 px-4 py-6 max-w-3xl mx-auto md:px-8">
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
@@ -84,17 +104,13 @@ export default async function CityPage({ searchParams }: PageProps) {
         <div className="space-y-4">
           <WeatherDisplay weatherData={weatherData} backgroundKey={bgKey} />
 
-          {airQuality && <AirQualityCard data={airQuality} />}
-
-          <UvIndexCard uvIndex={weatherData.current.uvIndex} />
-
-          {weatherData.hasSevereCondition && (
-            <AlertExplainer location={location} weather={weatherData.current} />
-          )}
-
-          <WhatToWear location={location} weather={weatherData.current} />
-
-          <ActivityAdvisor location={location} weather={weatherData.current} />
+          <CityInsights
+            location={location}
+            weather={weatherData.current}
+            airQuality={airQuality}
+            uvIndex={weatherData.current.uvIndex}
+            hasSevereCondition={weatherData.hasSevereCondition}
+          />
         </div>
       </div>
     </div>
