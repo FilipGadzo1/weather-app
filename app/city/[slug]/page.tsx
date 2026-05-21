@@ -101,15 +101,19 @@ export default async function CityPage({ searchParams }: PageProps) {
           <CityPageClient location={location} />
         </div>
 
-        <div className="space-y-4">
-          <WeatherDisplay weatherData={weatherData} backgroundKey={bgKey} />
-
-          <CityInsights
-            location={location}
-            weather={weatherData.current}
-            airQuality={airQuality}
-            uvIndex={weatherData.current.uvIndex}
-            hasSevereCondition={weatherData.hasSevereCondition}
+        <div className="space-y-4 pb-24 md:pb-0">
+          <WeatherDisplay
+            weatherData={weatherData}
+            backgroundKey={bgKey}
+            insights={
+              <CityInsights
+                location={location}
+                weather={weatherData.current}
+                airQuality={airQuality}
+                uvIndex={weatherData.current.uvIndex}
+                hasSevereCondition={weatherData.hasSevereCondition}
+              />
+            }
           />
         </div>
       </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { useWeatherStore } from '@/lib/store/weather-store'
 import { WeatherCard } from '@/components/weather/WeatherCard'
@@ -18,29 +19,24 @@ import { HourlyPrecipChart } from '@/components/weather/HourlyPrecipChart'
 import { WeatherSummaryCard } from '@/components/weather/WeatherSummaryCard'
 import { BestTimeCard } from '@/components/weather/BestTimeCard'
 import { TomorrowCard } from '@/components/weather/TomorrowCard'
+import { TabBar } from '@/components/weather/TabBar'
+import { MobileNav } from '@/components/weather/MobileNav'
+import type { TabKey } from '@/components/weather/TabBar'
 import { getNext24Hours } from '@/lib/weather/hourly'
 import type { WeatherData } from '@/types/weather'
 
-function SectionLabel({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 pt-2">
-      <span
-        className="text-white/35 text-xs uppercase tracking-[0.25em] font-medium"
-        style={{ fontFamily: 'var(--font-outfit)' }}
-      >
-        {children}
-      </span>
-      <div className="flex-1 h-px bg-white/10" />
-    </div>
-  )
-}
-
-export function WeatherDisplay({ weatherData, backgroundKey }: { weatherData: WeatherData; backgroundKey: string }) {
+export function WeatherDisplay({ weatherData, backgroundKey, insights }: {
+  weatherData: WeatherData
+  backgroundKey: string
+  insights: ReactNode
+}) {
   const { temperatureUnit } = useWeatherStore()
+  const [activeTab, setActiveTab] = useState<TabKey>('today')
   const next24 = getNext24Hours(weatherData)
+  const isNight = !weatherData.current.isDay
+
   return (
     <>
-      {/* Hero card – full width */}
       <WeatherCard
         location={weatherData.location}
         weather={weatherData.current}
@@ -50,46 +46,58 @@ export function WeatherDisplay({ weatherData, backgroundKey }: { weatherData: We
         backgroundKey={backgroundKey}
       />
 
-      {/* ── Today ──────────────────────────────────── */}
-      <SectionLabel>Today</SectionLabel>
+      <TabBar active={activeTab} onChange={setActiveTab} />
 
-      <HourlyChart hours={next24} unit={temperatureUnit} />
+      {activeTab === 'today' && (
+        <div className="space-y-4">
+          <HourlyChart hours={next24} unit={temperatureUnit} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <HourlyWindStrip hours={next24} />
+            <HourlyConditionStrip hours={next24} timezone={weatherData.timezone} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <HourlyHumidityChart hours={next24} />
+            <HourlyUvChart hours={next24} />
+          </div>
+          <HourlyPrecipChart hours={next24} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <WeatherSummaryCard weather={weatherData.current} daily={weatherData.daily} unit={temperatureUnit} />
+            <BestTimeCard hours={next24} />
+          </div>
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <HourlyWindStrip hours={next24} />
-        <HourlyConditionStrip hours={next24} timezone={weatherData.timezone} />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <HourlyHumidityChart hours={next24} />
-        <HourlyUvChart hours={next24} />
-      </div>
-      <HourlyPrecipChart hours={next24} />
+      {activeTab === 'week' && (
+        <div className="space-y-4">
+          <WeekSparkline daily={weatherData.daily} unit={temperatureUnit} />
+          <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
+            <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
+          </div>
+          {isNight ? (
+            <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <MoonPhaseCard />
+              <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
+            </div>
+          )}
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <WeatherSummaryCard weather={weatherData.current} daily={weatherData.daily} unit={temperatureUnit} />
-        <BestTimeCard hours={next24} />
-      </div>
+      {activeTab === 'atmosphere' && (
+        <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} daily={weatherData.daily} />
+      )}
 
-      {/* ── Atmosphere ─────────────────────────────── */}
-      <SectionLabel>Atmosphere</SectionLabel>
+      {activeTab === 'insights' && (
+        <div className="space-y-4">
+          {isNight && <MoonPhaseCard />}
+          {insights}
+        </div>
+      )}
 
-      <ExtendedStatsCard weather={weatherData.current} unit={temperatureUnit} daily={weatherData.daily} />
-
-      {/* ── This Week ──────────────────────────────── */}
-      <SectionLabel>This Week</SectionLabel>
-
-      <WeekSparkline daily={weatherData.daily} unit={temperatureUnit} />
-      <ForecastStrip daily={weatherData.daily} unit={temperatureUnit} />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
-        <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MoonPhaseCard />
-        <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
-      </div>
+      <MobileNav active={activeTab} onChange={setActiveTab} />
     </>
   )
 }
