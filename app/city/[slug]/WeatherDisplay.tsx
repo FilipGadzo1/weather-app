@@ -75,14 +75,7 @@ export function WeatherDisplay({ weatherData, backgroundKey, insights }: {
             <SunriseSunsetCard daily={weatherData.daily} timezone={weatherData.timezone} />
             <PrecipitationBarChart daily={weatherData.daily} timezone={weatherData.timezone} />
           </div>
-          {isNight ? (
-            <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <MoonPhaseCard />
-              <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
-            </div>
-          )}
+          <TomorrowCard daily={weatherData.daily} unit={temperatureUnit} timezone={weatherData.timezone} />
         </div>
       )}
 
@@ -92,7 +85,7 @@ export function WeatherDisplay({ weatherData, backgroundKey, insights }: {
 
       {activeTab === 'insights' && (
         <div className="space-y-4">
-          {isNight && <MoonPhaseCard />}
+          <MoonPhaseCard />
           {insights}
         </div>
       )}
