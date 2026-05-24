@@ -42,3 +42,9 @@ next-env.d.ts
 
 # omc state
 .omc/
+
+# superpowers state
+.superpowers/
+
+# planning artifacts
+docs/superpowers/

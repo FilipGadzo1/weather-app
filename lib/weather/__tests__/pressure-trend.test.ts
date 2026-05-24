@@ -13,6 +13,7 @@ function makeDaily(hourly: HourlyForecast[]): DailyForecast[] {
     tempMin: 10,
     wmoCode: 0,
     precipitationProbability: 0,
+    precipitationSum: null,
     sunrise: '2026-05-20T05:00',
     sunset: '2026-05-20T21:00',
     hourly,

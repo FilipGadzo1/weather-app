@@ -71,7 +71,7 @@ export default async function CityPage({ searchParams }: PageProps) {
   const bgImage = BG_IMAGES[bgKey] ?? BG_IMAGES['clear-night']
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative h-screen overflow-hidden">
       {/* Full-screen background image — crisp */}
       <div
         className="fixed inset-0 -z-20"
@@ -84,7 +84,7 @@ export default async function CityPage({ searchParams }: PageProps) {
       {/* Dark overlay for readability */}
       <div className="fixed inset-0 -z-10" style={{ background: 'rgba(4,8,20,0.15)' }} />
 
-      <div className="relative z-10 px-4 py-6 md:px-[8%]">
+      <div className="relative z-10 h-full overflow-y-auto px-4 py-6 md:px-[25%]">
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
@@ -107,11 +107,8 @@ export default async function CityPage({ searchParams }: PageProps) {
             backgroundKey={bgKey}
             insights={
               <CityInsights
-                location={location}
-                weather={weatherData.current}
                 airQuality={airQuality}
                 uvIndex={weatherData.current.uvIndex}
-                hasSevereCondition={weatherData.hasSevereCondition}
               />
             }
           />

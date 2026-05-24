@@ -24,7 +24,7 @@ export function HourlyConditionStrip({ hours, timezone }: HourlyConditionStripPr
   }
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">
         Conditions
       </h2>
@@ -37,7 +37,7 @@ export function HourlyConditionStrip({ hours, timezone }: HourlyConditionStripPr
             return (
               <div key={h.time} className="flex flex-col items-center gap-1.5 w-14">
                 <span className="text-white/50 text-xs" style={{ fontFamily: 'var(--font-outfit)' }}>{label}</span>
-                <WeatherIcon iconKey={info.iconKey} size={28} />
+                <WeatherIcon iconKey={info.iconKey} size={28} isDay={h.isDay ?? true} />
                 <span className="text-white/60 text-xs text-center">{condWord}</span>
               </div>
             )

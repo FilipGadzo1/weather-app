@@ -12,7 +12,7 @@ export function HourlyWindStrip({ hours }: HourlyWindStripProps) {
   const maxWind = Math.max(...validSpeeds, 1)
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">
         Wind Forecast
       </h2>

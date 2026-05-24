@@ -14,6 +14,7 @@ const makeDaily = (count: number): DailyForecast[] =>
     tempMin: 10 + i,
     wmoCode: 0,
     precipitationProbability: 0,
+    precipitationSum: null,
     sunrise: '',
     sunset: '',
     hourly: [],

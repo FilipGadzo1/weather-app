@@ -17,7 +17,7 @@ const DAILY_PARAMS = [
 
 const HOURLY_PARAMS = [
   'temperature_2m', 'apparent_temperature', 'weather_code', 'precipitation_probability', 'wind_speed_10m',
-  'relative_humidity_2m', 'surface_pressure', 'uv_index', 'precipitation', 'wind_direction_10m',
+  'relative_humidity_2m', 'surface_pressure', 'uv_index', 'precipitation', 'wind_direction_10m', 'is_day',
 ].join(',')
 
 export function buildForecastUrl(lat: number, lon: number): string {
@@ -54,6 +54,7 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
       uvIndex: data.hourly.uv_index?.[i] ?? 0,
       precipitationAmount: data.hourly.precipitation?.[i] ?? 0,
       windDirection: data.hourly.wind_direction_10m?.[i] ?? 0,
+      isDay: data.hourly.is_day?.[i] === 1,
     })
   })
 
@@ -94,7 +95,7 @@ export function parseWeatherResponse(data: any, location: GeoLocation): WeatherD
 
 export async function fetchWeather(lat: number, lon: number, location: GeoLocation): Promise<WeatherData> {
   const url = buildForecastUrl(lat, lon)
-  const res = await fetch(url, { next: { revalidate: 1800 } })  // 30-min cache
+  const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) throw new Error(`Open-Meteo error: ${res.status}`)
   const data = await res.json()
   return parseWeatherResponse(data, location)

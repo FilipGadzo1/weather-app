@@ -26,7 +26,7 @@ function makeData(hours: HourlyForecast[]): WeatherData {
     },
     daily: Object.entries(byDay).map(([date, hourly]) => ({
       date, tempMax: 20, tempMin: 10, wmoCode: 2,
-      precipitationProbability: 0, sunrise: '', sunset: '', hourly,
+      precipitationProbability: 0, precipitationSum: null, sunrise: '', sunset: '', hourly,
     })),
     timezone: 'UTC',
     hasSevereCondition: false,

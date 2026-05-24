@@ -8,6 +8,7 @@ const mockDaily: DailyForecast[] = [{
   tempMin: 12,
   wmoCode: 0,
   precipitationProbability: 0,
+  precipitationSum: null,
   sunrise: '2026-05-20T05:30',
   sunset: '2026-05-20T20:30',
   hourly: [],

@@ -35,7 +35,7 @@ export function AlertExplainer({ location, weather }: AlertExplainerProps) {
   }
 
   return (
-    <div className="glass-card border-l-4 border-amber-400 p-4 md:p-6">
+    <div className="glass-card border-l-4 border-amber-400 p-4 md:p-6" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <button
         onClick={fetchExplanation}
         className="w-full flex items-center justify-between"

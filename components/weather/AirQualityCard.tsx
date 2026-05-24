@@ -11,7 +11,7 @@ export default function AirQualityCard({ data }: AirQualityCardProps) {
   const category = getAqiCategory(data.usAqi)
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-6" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-4">
         Air Quality
       </h2>

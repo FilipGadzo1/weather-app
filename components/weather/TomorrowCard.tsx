@@ -37,7 +37,7 @@ export function TomorrowCard({ daily, unit, timezone }: TomorrowCardProps) {
   }
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider">Tomorrow</h2>
         <span className="text-white/50 text-xs">{dateLabel}</span>

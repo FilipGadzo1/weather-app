@@ -1,11 +1,17 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useWeatherStore } from '@/lib/store/weather-store'
 import type { GeoLocation } from '@/types/weather'
 
 export function CityPageClient({ location }: { location: GeoLocation }) {
   const { isSaved, addSavedLocation, removeSavedLocation, temperatureUnit, toggleTemperatureUnit } = useWeatherStore()
-  const saved = isSaved(location.name, location.country)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  const saved = mounted && isSaved(location.name, location.country)
+  const unit = mounted ? temperatureUnit : 'C'
 
   return (
     <div className="flex items-center gap-2">
@@ -13,7 +19,7 @@ export function CityPageClient({ location }: { location: GeoLocation }) {
         onClick={toggleTemperatureUnit}
         className="glass-card-dark px-3 py-1.5 text-white/70 hover:text-white text-sm font-medium transition-colors rounded-lg"
       >
-        °{temperatureUnit === 'C' ? 'F' : 'C'}
+        °{unit === 'C' ? 'F' : 'C'}
       </button>
       <button
         onClick={() => saved ? removeSavedLocation(location.name, location.country) : addSavedLocation(location)}

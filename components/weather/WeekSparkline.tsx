@@ -30,7 +30,7 @@ export function WeekSparkline({ daily, unit }: WeekSparklineProps) {
   const lowPoints = daily.map((d, i) => `${x(i)},${y(toDisplayTemp(d.tempMin, unit))}`).join(' ')
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider">
         7-Day Temperature Trend
       </h2>

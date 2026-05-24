@@ -1,11 +1,18 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { getMoonPhase, SYNODIC_MONTH } from '@/lib/weather/moon-phase'
 
 interface MoonPhaseCardProps {
   date?: Date
 }
 
-export function MoonPhaseCard({ date = new Date() }: MoonPhaseCardProps) {
-  const moon = getMoonPhase(date)
+export function MoonPhaseCard({ date }: MoonPhaseCardProps) {
+  const [moon, setMoon] = useState(() => getMoonPhase(new Date(0)))
+
+  useEffect(() => {
+    setMoon(getMoonPhase(date ?? new Date()))
+  }, [date])
   const age = moon.ageInDays
   const isWaxing = age < SYNODIC_MONTH / 2
 
@@ -17,7 +24,7 @@ export function MoonPhaseCard({ date = new Date() }: MoonPhaseCardProps) {
   const shadowCx = isWaxing ? 40 - shadowRadius : 40 + shadowRadius
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-4">
         Moon Phase
       </h2>

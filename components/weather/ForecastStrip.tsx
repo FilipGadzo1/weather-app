@@ -80,7 +80,7 @@ export function ForecastStrip({ daily, unit }: ForecastStripProps) {
   }
 
   return (
-    <div className="glass-card p-4 md:p-6">
+    <div className="glass-card p-4 md:p-6" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2
         className="text-white/60 text-xs font-medium uppercase tracking-[0.2em] mb-4"
         style={{ fontFamily: 'var(--font-outfit)' }}
@@ -114,7 +114,7 @@ export function ForecastStrip({ daily, unit }: ForecastStripProps) {
               return (
                 <div key={hour.time} className="flex flex-col items-center gap-1 min-w-[56px] text-center">
                   <span className="text-white/50 text-xs">{time}</span>
-                  <WeatherIcon iconKey={info.iconKey} size={20} />
+                  <WeatherIcon iconKey={info.iconKey} size={20} isDay={hour.isDay ?? true} />
                   <span className="text-white text-sm font-medium">{toDisplayTemp(hour.temperature, unit)}°</span>
                   <span className="text-white/40 text-xs">{hour.precipitationProbability}% 🌧</span>
                   <span className="text-white/40 text-xs">{Number.isFinite(hour.windSpeed) ? Math.round(hour.windSpeed) : 0} km/h</span>

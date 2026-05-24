@@ -1,3 +1,6 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import type { DailyForecast } from '@/types/weather'
 
 interface SunriseSunsetCardProps {
@@ -36,10 +39,17 @@ function dayLength(sunriseISO: string, sunsetISO: string): string {
 }
 
 export function SunriseSunsetCard({ daily, timezone }: SunriseSunsetCardProps) {
+  const [t, setT] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (daily.length === 0 || !daily[0]) return
+    const { sunrise, sunset } = daily[0]
+    setT(getSunFraction(sunrise, sunset))
+  }, [daily])
+
   if (daily.length === 0 || !daily[0]) return null
 
   const { sunrise, sunset } = daily[0]
-  const t = getSunFraction(sunrise, sunset)
 
   const arcLength = Math.PI * 90
   const angle = t !== null ? Math.PI * t : 0
@@ -47,7 +57,7 @@ export function SunriseSunsetCard({ daily, timezone }: SunriseSunsetCardProps) {
   const cy = 100 - 90 * Math.sin(angle)
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">Daylight</h2>
       <svg viewBox="0 0 200 110" className="w-full max-w-xs mx-auto block">
         <path

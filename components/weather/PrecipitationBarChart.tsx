@@ -19,7 +19,7 @@ export function PrecipitationBarChart({ daily, timezone }: PrecipitationBarChart
   if (days.length === 0) return null
 
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-4">
         Precipitation Outlook
       </h2>

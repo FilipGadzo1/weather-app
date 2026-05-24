@@ -31,7 +31,7 @@ export async function fetchAirQuality(
 ): Promise<AirQualityData | null> {
   try {
     const res = await fetch(buildAirQualityUrl(lat, lon), {
-      next: { revalidate: 1800 },
+      cache: 'no-store',
     })
     if (!res.ok) return null
     const data = await res.json()

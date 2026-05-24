@@ -16,7 +16,7 @@ export function BestTimeCard({ hours }: BestTimeCardProps) {
   const window = findBestWindow(hours)
   if (!window) return null
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider mb-3">
         Best Time Outside
       </h2>

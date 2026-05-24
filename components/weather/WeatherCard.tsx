@@ -8,17 +8,8 @@ import { WindCompass } from './WindCompass'
 import { FeelScoreBadge } from './FeelScoreBadge'
 import { getComfortBanner } from '@/lib/weather/comfort-banner'
 import { degreesToCompass } from '@/lib/weather/wind-direction'
+import { CityTime } from './CityTime'
 
-const BG_IMAGES: Record<string, string> = {
-  'clear-day':   '/backgrounds/bg-sunny.png',
-  'clear-night': '/backgrounds/bg-night.png',
-  cloudy:        '/backgrounds/bg-cloudy.png',
-  fog:           '/backgrounds/bg-cloudy.png',
-  rain:          '/backgrounds/bg-rain.png',
-  snow:          '/backgrounds/bg-snow.png',
-  storm:         '/backgrounds/bg-rain.png',
-  aurora:        '/backgrounds/bg-aurora.png',
-}
 
 interface WeatherCardProps {
   location: GeoLocation
@@ -115,31 +106,73 @@ function SunGlow() {
   )
 }
 
+function MoonGlow() {
+  return (
+    <div
+      className="absolute top-0 right-0 w-80 h-80 rounded-full pointer-events-none"
+      style={{
+        background: 'radial-gradient(circle, rgba(148,163,184,0.18) 0%, rgba(99,120,167,0.08) 50%, transparent 70%)',
+        animationName: 'pulse-glow',
+        animationDuration: '7s',
+        animationIterationCount: 'infinite',
+        animationTimingFunction: 'ease-in-out',
+      }}
+    />
+  )
+}
+
+function StarParticles() {
+  const stars = [
+    { top: '8%',  left: '12%', duration: '3.2s', delay: '0s'   },
+    { top: '14%', left: '42%', duration: '4.5s', delay: '0.8s' },
+    { top: '6%',  left: '68%', duration: '2.8s', delay: '1.4s' },
+    { top: '22%', left: '80%', duration: '3.9s', delay: '0.3s' },
+    { top: '18%', left: '28%', duration: '5.1s', delay: '2.1s' },
+    { top: '10%', left: '55%', duration: '3.6s', delay: '1.0s' },
+    { top: '28%', left: '15%', duration: '4.2s', delay: '0.6s' },
+    { top: '5%',  left: '88%', duration: '2.5s', delay: '1.7s' },
+    { top: '32%', left: '62%', duration: '4.8s', delay: '0.2s' },
+    { top: '20%', left: '48%', duration: '3.3s', delay: '2.5s' },
+  ]
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {stars.map((s, i) => (
+        <div
+          key={i}
+          className="star"
+          style={{ top: s.top, left: s.left, '--duration': s.duration, '--delay': s.delay } as React.CSSProperties}
+        />
+      ))}
+    </div>
+  )
+}
+
 export function WeatherCard({ location, weather, unit, sunTimes, timezone, backgroundKey }: WeatherCardProps) {
   const info = getWmoInfo(weather.wmoCode)
+  const effectiveIconKey = info.iconKey === 'clear' && backgroundKey === 'clear-night' ? 'clear-night' : info.iconKey
+  const isNight = backgroundKey === 'clear-night'
   const temp = toDisplayTemp(weather.temperature, unit)
   const feelsLike = toDisplayTemp(weather.feelsLike, unit)
   const windDir = degreesToCompass(weather.windDirection)
   const banner = getComfortBanner(weather)
-  const bgImage = BG_IMAGES[backgroundKey] ?? BG_IMAGES['clear-night']
 
   return (
     <div
       className="relative overflow-hidden rounded-2xl"
       style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center top',
+        background: 'rgba(255,255,255,0.06)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid rgba(255,255,255,0.15)',
-        boxShadow: '0 8px 40px rgba(0,0,0,0.5)',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)',
         minHeight: '360px',
       }}
     >
-      {/* Bottom-up gradient overlay for readability */}
+      {/* Bottom-up gradient for readability */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(to top, rgba(4,8,20,0.92) 0%, rgba(4,8,20,0.65) 40%, rgba(4,8,20,0.2) 70%, transparent 100%)',
+          background: 'linear-gradient(to top, rgba(3,7,18,0.85) 0%, rgba(3,7,18,0.4) 50%, transparent 100%)',
         }}
       />
 
@@ -147,6 +180,8 @@ export function WeatherCard({ location, weather, unit, sunTimes, timezone, backg
       {(backgroundKey === 'rain' || backgroundKey === 'storm') && <RainParticles />}
       {backgroundKey === 'snow' && <SnowParticles />}
       {backgroundKey === 'clear-day' && <SunGlow />}
+      {isNight && <MoonGlow />}
+      {isNight && <StarParticles />}
 
       {/* Content */}
       <div className="relative z-10 p-6 md:p-8 flex flex-col justify-end" style={{ minHeight: '360px' }}>
@@ -171,9 +206,10 @@ export function WeatherCard({ location, weather, unit, sunTimes, timezone, backg
             >
               {info.label}
             </p>
+            <CityTime timezone={timezone} />
           </div>
           <div className="shrink-0 opacity-95 drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-            <WeatherIcon iconKey={info.iconKey} size={88} />
+            <WeatherIcon iconKey={effectiveIconKey} size={88} />
           </div>
         </div>
 

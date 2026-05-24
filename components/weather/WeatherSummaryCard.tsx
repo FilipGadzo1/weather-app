@@ -10,7 +10,7 @@ interface WeatherSummaryCardProps {
 export function WeatherSummaryCard({ weather, daily, unit }: WeatherSummaryCardProps) {
   const summary = buildWeatherSummary(weather, daily, unit)
   return (
-    <div className="glass-card p-4">
+    <div className="glass-card p-4" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <h2 className="text-white/70 text-sm font-medium uppercase tracking-wider">
         At a Glance
       </h2>

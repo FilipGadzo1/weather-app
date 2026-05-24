@@ -52,7 +52,7 @@ export function ActivityAdvisor({ location, weather }: ActivityAdvisorProps) {
   }
 
   return (
-    <div className="glass-card p-6">
+    <div className="glass-card p-6" style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-white font-semibold text-lg">Activity Advisor</h2>

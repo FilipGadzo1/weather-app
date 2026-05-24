@@ -19,7 +19,7 @@ const baseWeather: CurrentWeather = {
 
 const daily: DailyForecast[] = [{
   date: '2026-05-20', tempMax: 22, tempMin: 12, wmoCode: 0,
-  precipitationProbability: 0, sunrise: '', sunset: '', hourly: [],
+  precipitationProbability: 0, precipitationSum: null, sunrise: '', sunset: '', hourly: [],
 }]
 
 describe('buildWeatherSummary wind description', () => {

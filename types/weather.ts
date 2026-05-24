@@ -46,6 +46,7 @@ export interface HourlyForecast {
   uvIndex: number              // UV index 0–11+
   precipitationAmount: number  // mm/h actual precipitation
   windDirection: number        // degrees 0–360, 0 = North
+  isDay?: boolean
 }
 
 export interface WeatherData {

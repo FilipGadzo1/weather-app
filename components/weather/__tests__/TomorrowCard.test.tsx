@@ -16,12 +16,12 @@ jest.mock('../WeatherIcon', () => ({
 
 const today: DailyForecast = {
   date: '2026-05-20', tempMax: 22, tempMin: 12, wmoCode: 0,
-  precipitationProbability: 10, sunrise: '2026-05-20T05:30', sunset: '2026-05-20T20:30', hourly: [],
+  precipitationProbability: 10, precipitationSum: null, sunrise: '2026-05-20T05:30', sunset: '2026-05-20T20:30', hourly: [],
 }
 
 const tomorrow: DailyForecast = {
   date: '2026-05-21', tempMax: 18, tempMin: 8, wmoCode: 1,
-  precipitationProbability: 40, sunrise: '2026-05-21T05:31', sunset: '2026-05-21T20:29', hourly: [],
+  precipitationProbability: 40, precipitationSum: null, sunrise: '2026-05-21T05:31', sunset: '2026-05-21T20:29', hourly: [],
 }
 
 describe('TomorrowCard', () => {
